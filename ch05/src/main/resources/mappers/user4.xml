@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ch05.mapper.User4Mapper">
+
+    <insert id="insertUser4">
+        INSERT INTO `user4` VALUES (#{uid}, #{name}, #{gender}, #{age}, #{hp}, #{addr});
+    </insert>
+
+    <select id="selectUser4s" resultType="kr.co.ch05.dto.User4DTO">
+        SELECT * FROM `user4`;
+    </select>
+    <!-- while 등으로 처리 하지 않고 resultType 로 경로 설정하면 자동으로 매핑됨.  -->
+
+    <select id="selectUser4" resultType="kr.co.ch05.dto.User4DTO">
+        SELECT * FROM `user4` WHERE `uid`=#{uid};
+    </select>
+
+    <update id="updateUser4">
+        UPDATE `user4` SET
+                            `name`  =#{name},
+                            `gender`=#{gender},
+                            `age`   =#{age},
+                            `hp`    =#{hp},
+                            `addr`  =#{addr}
+                        where `uid`=#{uid};
+    </update>
+
+    <delete id="deleteUser4">
+        DELETE FROM `user4` WHERE `uid`=#{uid};
+    </delete>
+</mapper>
