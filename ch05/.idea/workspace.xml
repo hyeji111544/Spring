@@ -10,17 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="198c1447-6c9d-40d7-9617-dc005bb4438d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch05/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch05/config/JdbcConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch05/config/MyWebAppInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch01/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch01/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch03/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch03/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch04/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch04/.idea/workspace.xml" afterDir="false" />
@@ -29,6 +18,8 @@
       <change beforePath="$PROJECT_DIR$/../ch04/src/main/java/kr/co/ch04/controller/User5Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ch04/src/main/java/kr/co/ch04/controller/User5Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch04/src/main/webapp/WEB-INF/views/user5/list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../ch04/src/main/webapp/WEB-INF/views/user5/list.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch04/src/main/webapp/WEB-INF/views/user5/modify.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../ch04/src/main/webapp/WEB-INF/views/user5/modify.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../shopping/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../shopping/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../shopping/.idea/misc.xml" beforeDir="false" />
@@ -50,6 +41,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Jsp File" />
         <option value="spring-beans.schema" />
         <option value="Class" />
       </list>
@@ -87,7 +79,7 @@
     &quot;Tomcat Server.register.jsp.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/java/Desktop/workspace/Spring/ch05/src/main/resources/mappers&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/java/Desktop/workspace/Spring/ch05/src/main/webapp/WEB-INF/views/member&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -101,6 +93,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\java\Desktop\workspace\Spring\ch05\src\main\webapp\WEB-INF\views\member" />
       <recent name="C:\Users\java\Desktop\workspace\Spring\ch05\src\main\resources\mappers" />
       <recent name="C:\Users\java\Desktop\workspace\Spring\ch05\src\main\webapp\WEB-INF\views" />
       <recent name="C:\Users\java\Desktop\workspace\Spring\ch05\src\main\java\kr\co\ch05\config" />
@@ -203,13 +196,6 @@
       </method>
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-4caba194b151-107bc6b7" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -224,6 +210,13 @@
       <workItem from="1709695201260" duration="3617000" />
       <workItem from="1709701330163" duration="260000" />
       <workItem from="1709711236789" duration="3870000" />
+      <workItem from="1709770708015" duration="12365000" />
+      <workItem from="1709794991640" duration="509000" />
+      <workItem from="1709795880172" duration="15000" />
+      <workItem from="1709796173192" duration="18000" />
+      <workItem from="1709796672619" duration="1173000" />
+      <workItem from="1709797853243" duration="115000" />
+      <workItem from="1709799066945" duration="90000" />
     </task>
     <servers />
   </component>
