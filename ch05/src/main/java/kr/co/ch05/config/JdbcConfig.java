@@ -17,7 +17,7 @@ public class JdbcConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/studydb");
         dataSource.setUsername("hyeji");
-        dataSource.setPassword("abc1234");
+        dataSource.setPassword("123$qweR");
 
         // DBCP2 옵션 설정
         dataSource.setMaxTotal(13); //최대 연결 풀 크기 설정
