@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class User5DTO {
-    private int seq;
+    private String seq;
     private String name;
     private String gender;
     private int age;
