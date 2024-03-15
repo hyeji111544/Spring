@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <script>
+        window.onload = function (){
+            const form = document.formUser;
+
+            form.onsubmit = function (e){
+                e.preventDefault();
+
+                const uid = form.uid.value;
+                const age = form.age.value;
+                const hp = form.hp.value;
+                const name = form.name.value;
+                const pass = form.pass.value;
+                const role = form.role.value;
+
+                const jsonData = {
+                    "uid": uid,
+                    "age": age,
+                    "hp": hp,
+                    "name": name,
+                    "pass": pass,
+                    "role": role
+                }
+                fetch('/ch10/user', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+
+                        if(data != null){
+                            alert('등록 되었습니다.');
+                            location.href = '/ch10/user/login';
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        }
+
+    </script>
+</head>
+<body>
+<h3>user 등록</h3>
+
+<a th:href="@{/}">메인</a>
+<a th:href="@{/user/login}">로그인</a>
+<form name="formUser" method="post">
+    <table border="1">
+        <tr>
+            <td>아이디</td>
+            <td><input type="text"  name="uid"></td>
+        </tr>
+        <tr>
+            <td>비밀번호</td>
+            <td><input type="text"  name="pass"></td>
+        </tr>
+        <tr>
+            <td>나이</td>
+            <td><input type="text" name="age"></td>
+        </tr>
+        <tr>
+            <td>번호</td>
+            <td><input type="text" name="hp"></td>
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>권한</td>
+            <td>
+                <select name="role">
+                    <option value="ADMIN">최고관리자</option>
+                    <option value="MANAGER">운영자</option>
+                    <option value="USER">사용자</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right"><input type="submit" value="등록"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

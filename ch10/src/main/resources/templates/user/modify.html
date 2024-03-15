@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>modify</title>
+    <script>
+        window.onload = function (){
+            const form = document.formUser;
+            const url = location.href;
+            const param = url.split('?')[1];
+            const uid = url.split('=')[1];
+            let formDate;
+
+            fetch(`/ch10/user/${uid}`)
+                .then(response => response.json())
+                .then(data => {
+                    formDate = data.regDate;
+                    form.uid.value = data.uid;
+                    form.age.value = data.age;
+                    form.hp.value = data.hp;
+                    form.name.value = data.name;
+                    form.pass.value = '';
+                    form.regDate.value = new Date(data.regDate).toISOString().split('T')[0];
+                    form.role.value = data.role;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            form.onsubmit = function (e){
+                e.preventDefault();
+
+                const jsonData={
+                    "uid" : form.uid.value,
+                    "age" : form.age.value,
+                    "hp" : form.hp.value,
+                    "name" : form.name.value,
+                    "pass" : form.pass.value,
+                    "regDate" : formDate,
+                    "role" : form.role.value
+                }
+
+                fetch('/ch10/user', {
+                    method : `PUT`,
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+
+                        if(data != null){
+                            alert('수정 되었습니다.');
+                            location.href = '/ch10/user/list';
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        }
+    </script>
+</head>
+<body>
+<h3>user 수정</h3>
+
+<a th:href="@{/}">메인</a>
+<a th:href="@{/user/list}">목록</a>
+<form name="formUser" method="post">
+    <table border="1">
+        <tr>
+            <td>아이디</td>
+            <td><input type="text" readonly name="uid"></td>
+        </tr>
+        <tr>
+            <td>나이</td>
+            <td><input type="text" name="age"></td>
+        </tr>
+        <tr>
+            <td>번호</td>
+            <td><input type="text" name="hp"></td>
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>가입일</td>
+            <td><input type="date" readonly name="regDate"></td>
+        </tr>
+        <tr>
+            <td>비밀번호</td>
+            <td><input type="text" name="pass"></td>
+        </tr>
+        <tr>
+            <td>역할</td>
+            <td><input type="text" readonly name="role"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right"><input type="submit" value="등록"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

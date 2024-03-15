@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script>
+
+        window.onload = function (){
+            const  form = document.formUser;
+
+            form.onsubmit = function (e){
+                e.preventDefault();
+                const uid = form.uid.value;
+                const pass = form.pass.value;
+
+                const jsonData = {
+                    "uid" : form.uid.value,
+                    "pass" : form.pass.value,
+                };
+                console.log(jsonData.uid +"jsonData!");
+                console.log(jsonData.pass +"jsonData!");
+                fetch('/ch10/login',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response=> {
+
+                        if(!response.ok){
+                            throw new Error('Not Found');
+                        }
+                        return response.json()})
+                    .then(data => {
+                        console.log(data);
+                        localStorage.setItem("grantType", data.grantType);
+                        localStorage.setItem("accessToken", data.access);
+
+
+                        location.href='/ch10/user/list';
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                        // 회원이 아닌 경우
+                        alert('아이디 혹은 비밀번호를 다시 확인하세요.');
+                    });
+
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <h3>로그인</h3>
+    <form name="formUser" method="post">
+        <input type="text" name="uid"/><br>
+        <input type="password" name="pass"/><br>
+        <input type="submit" value="로그인"/><br>
+    </form>
+    <a href="/ch10/user/register">회원가입</a>
+</body>
+</html>

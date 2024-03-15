@@ -1,0 +1,41 @@
+package kr.co.ch10.jwt;
+
+
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import org.springframework.http.MediaType;
+
+import java.io.IOException;
+
+public class JwtMyException extends RuntimeException{
+
+    JWT_ERROR jwtError;
+
+    @Getter
+    public enum JWT_ERROR{
+
+        BADTYPE(401, "JMT type is not Bearer or is null"),
+        MALFORM(402, "JMT malformed"),
+        BADSIGN(403, "JMT has bad signatured"),
+        EXPIRED(404, "JMT expired");
+
+        private int status;
+        private String message;
+
+        JWT_ERROR(int status, String message){
+            this.status = status;
+            this.message = message;
+        }
+    }
+
+    public JwtMyException(JWT_ERROR jwtError){
+        super(jwtError.name());
+        this.jwtError = jwtError;
+    }
+
+    public void sendResponseError(HttpServletResponse resp) throws IOException{
+        resp.setStatus(jwtError.getStatus());
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        resp.getWriter().println(jwtError.getMessage());
+    }
+}
