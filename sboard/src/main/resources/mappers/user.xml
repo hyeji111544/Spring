@@ -36,6 +36,9 @@
             <if test="type == 'hp'">
                 hp=#{value}
             </if>
+            <if test="type == 'email'">
+                email=#{value}
+            </if>
         </where>
     </select>
 

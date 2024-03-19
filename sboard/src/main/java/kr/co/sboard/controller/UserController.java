@@ -66,6 +66,8 @@ public class UserController {
 
         int count = userService.selectCountUser(type, value);
         log.info("count : " + count);
+        log.info("type : " + type);
+
 
         // 중복 없으면 이메일 인증코드 발송
         if(count == 0 && type.equals("email")){
