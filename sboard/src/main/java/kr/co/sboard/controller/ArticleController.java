@@ -6,9 +6,12 @@ import kr.co.sboard.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +25,9 @@ public class ArticleController {
          - modelAttribute("cate", cate)와 동일
     */
     @GetMapping("/article/list")
-    public String list(@ModelAttribute("cate") String cate){
+    public String list(@ModelAttribute("cate") String cate, Model model) {
+        List<ArticleDTO> articles = articleService.findByParentAndCate(0, cate);
+        model.addAttribute("articles", articles);
         return "/article/list";
     }
 

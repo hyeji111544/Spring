@@ -23,15 +23,15 @@ public class SecurityUserService implements UserDetailsService {
 
         Optional<User> result = userRepository.findById(username);
 
-        log.info("here1 : " + result);
+        //log.info("here1 : " + result);
         UserDetails userDetails = null;
 
         if(!result.isEmpty()){
-            log.info("here2");
+            //log.info("here2");
             // 해당하는 사용자가 존재하면 인증 객체 생성
             User user = result.get();
 
-            log.info("here3 : " + user.toString());
+            //log.info("here3 : " + user.toString());
 
             userDetails = MyUserDetails.builder().user(user).build();
         }

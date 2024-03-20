@@ -28,4 +28,6 @@ public class ArticleDTO {
     private LocalDateTime rdate;
     private List<MultipartFile> files;
 
+    private UserDTO user;
+
 }

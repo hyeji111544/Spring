@@ -13,8 +13,8 @@
             OOO 글목록
         </div>
         <div class="card-body">
-            <table id="datatablesSimple">
-                <thead>
+            <table class="table table-hover">
+                <thead class="table-dark">
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
@@ -25,29 +25,34 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <a href="@{#}">제목입니다.</a>
-                    </td>
-                    <td>길동123</td>
-                    <td>12</td>
-                    <td>2011/04/25</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <a href="@{#}">제목입니다.</a>
-                    </td>
-                    <td>길동123</td>
-                    <td>12</td>
-                    <td>2011/04/25</td>
-                </tr>
 
+                <tr th:each="articles:${articles}">
+                    <td>[[${articles.no}]]</td>
+                    <td>
+                        <a href="@{#}">[[${articles.title}]]</a>
+                    </td>
+                    <td>[[${articles.user.nick}]]</td>
+                    <td>[[${articles.hit}]]</td>
+                    <td th:text="${#strings.substring(articles.rdate, 0, 10)}"></td>
+                </tr>
 
 
                 </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link"> &laquo; </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> &raquo; </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
     </div>

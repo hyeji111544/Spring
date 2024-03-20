@@ -46,6 +46,7 @@ spring:
     jpa:
         database: mysql
         hibernate:
+            # 배포할 떄는 none, 개발할 때는 update
             ddl-auto: update
             naming:
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
@@ -53,12 +54,13 @@ spring:
             hibernate:
                 format_sql: true
                 show_sql: true
+    # 파일 업로드 설정
     servlet:
         multipart:
             location: uploads/
             max-file-size: 10MB
 
-# 파일 업로드 설정
+# 파일 경로 설정
 file:
     upload:
         path: uploads/
