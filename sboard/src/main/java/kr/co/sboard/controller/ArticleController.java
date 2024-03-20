@@ -2,9 +2,13 @@ package kr.co.sboard.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.sboard.dto.ArticleDTO;
+import kr.co.sboard.dto.PageRequestDTO;
+import kr.co.sboard.dto.PageResponseDTO;
 import kr.co.sboard.service.ArticleService;
+import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +23,25 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final FileService fileService;
 
     /*
         @ModelAttribute("cate")
          - modelAttribute("cate", cate)와 동일
     */
     @GetMapping("/article/list")
-    public String list(@ModelAttribute("cate") String cate, Model model) {
-        List<ArticleDTO> articles = articleService.findByParentAndCate(0, cate);
-        model.addAttribute("articles", articles);
+    public String list(Model model, PageRequestDTO pageRequestDTO) {
+        PageResponseDTO pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
+        log.info("pageResponseDTO : " + pageResponseDTO);
+
+        model.addAttribute(pageResponseDTO);
+
         return "/article/list";
     }
 
     @GetMapping("/article/write")
     public String write(@ModelAttribute("cate") String cate){
+        log.info("write ...:" + cate);
         return "/article/write";
     }
 
@@ -51,4 +60,18 @@ public class ArticleController {
 
         return "redirect:/article/list";
     }
+
+    @GetMapping("/article/view")
+    public String view(int no, Model model){
+        ArticleDTO articleDTO = articleService.findById(no);
+        model.addAttribute(articleDTO);
+        log.info(articleDTO.toString());
+        return "/article/view";
+    }
+
+    @GetMapping("/article/fileDownload")
+    public ResponseEntity<?> fileDownload(int fno){
+        return fileService.fileDownload(fno);
+    }
+
 }

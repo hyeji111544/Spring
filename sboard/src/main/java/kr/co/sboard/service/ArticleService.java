@@ -2,6 +2,8 @@ package kr.co.sboard.service;
 
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.FileDTO;
+import kr.co.sboard.dto.PageRequestDTO;
+import kr.co.sboard.dto.PageResponseDTO;
 import kr.co.sboard.entity.Article;
 import kr.co.sboard.entity.File;
 import kr.co.sboard.repository.ArticleRepository;
@@ -9,9 +11,12 @@ import kr.co.sboard.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -27,12 +32,41 @@ public class ArticleService {
     // RootConfig Bean 생성/등록
     private final ModelMapper modelMapper;
 
-    public List<ArticleDTO> findByParentAndCate(int parent, String cate){
-        List<Article> articles = articleRepository.findByParentAndCate(parent, cate);
+    public PageResponseDTO findByParentAndCate(PageRequestDTO pageRequestDTO){
 
-        return articles.stream()
-                .map((entity)->modelMapper.map(entity, ArticleDTO.class))
+        Pageable pageable = pageRequestDTO.getPageable("no");
+
+        Page<Article> pageArticle = articleRepository.findByParentAndCate(0, pageRequestDTO.getCate(), pageable);
+
+
+        List<ArticleDTO> dtoList = pageArticle.getContent().stream()
+                .map(entity -> modelMapper.map(entity, ArticleDTO.class))
                 .toList();
+
+        int total = (int) pageArticle.getTotalElements();
+
+        return PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total(total)
+                .build();
+    }
+
+    public ArticleDTO findById(int no){
+        Optional<Article> optArticle = articleRepository.findById(no);
+        log.info("findById ...1 " + optArticle);
+
+        ArticleDTO articleDTO = null;
+
+        if(optArticle.isPresent()){
+            log.info("findById ...2 ");
+            Article article = optArticle.get();
+            log.info("findById...3 : " + article.toString());
+            articleDTO = modelMapper.map(article, ArticleDTO.class);
+            log.info("findById ...4 ");
+        }
+        log.info("findById ...5 : " + articleDTO);
+        return articleDTO;
     }
 
     public void insertArticle(ArticleDTO articleDTO){
@@ -62,6 +96,17 @@ public class ArticleService {
 
     }
 
+    /*
+    public void insertComment(ArticleDTO articleDTO){
+       Article article = modelMapper.map(articleDTO, Article.class);
+        log.info("insertComment : " + article.toString());
+
+        articleRepository.save(article);
+
+    }
+  */
+
     // fileUpload 메서드 -> FileService 클래스로 이동
+
 
 }

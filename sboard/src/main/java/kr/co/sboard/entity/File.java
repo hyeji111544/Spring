@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -29,4 +30,13 @@ public class File {
 
     @CreationTimestamp
     private LocalDateTime rdate;
+
+    /*
+    관계설정은 양방향으로 해주는 것이 좋으나
+    이미 ano 가 존재하기 때문에 중복으로 넣을 수 없음.
+
+    @ManyToOne
+    @JoinColumn(name= "ano")
+    private Article article;
+    */
 }
