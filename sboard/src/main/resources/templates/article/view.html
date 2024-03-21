@@ -7,6 +7,21 @@
     <script>
         window.onload = function (){
 
+            const fileLinks = document.getElementsByClassName('fileLink');
+
+            for (const fileLink of fileLinks){
+                // 파일 다운로드 요청과 동시에 다운로드 카운트 요청
+                fileLink.onclick = async function(){
+                    const fno = this.dataset.fno;
+
+                    //FileController - downloadCount 요청 메서드 실행
+                    const data = await fetchData(`/sboard/file/downloadCount/${fno}`);
+
+                    this.nextElementSibling.innerHTML = data.count + 1;
+                }
+            }
+
+            /*
             e.preventDefault();
 
             const parent = form.parent.value;
@@ -22,7 +37,7 @@
             console.log(jsonDate);
 
             fetch().then().then().catch();
-
+            */
 
         }
     </script>
@@ -46,8 +61,10 @@
                 <div th:if="${articleDTO.file > 0}" class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label" >첨부파일</label>
                     <ul class="list-group">
+
                         <li th:each="file:${articleDTO.fileList}" class="list-group-item d-flex justify-content-between align-items-center">
-                            <a th:href="@{/article/fileDownload(fno=${file.fno})}">[[${file.oName}]]</a>
+                            <!-- REST API 개발자도구 열어서 해당 링크 주소 확인해 볼것-->
+                            <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink" th:data-fno="${file.fno}">[[${file.oName}]]</a>
                             <span class="badge text-bg-primary rounded-pill">[[${file.download}]]</span>
                         </li>
                     </ul>

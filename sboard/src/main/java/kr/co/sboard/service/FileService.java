@@ -16,16 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,31 +43,33 @@ public class FileService {
         log.info("fileUploadPath..1 : " + path);
 
         for(MultipartFile mf : articleDTO.getFiles()){
-            String oName = mf.getOriginalFilename();
-            log.info("oName..2 : "+oName);
+            log.info("oName..2 : ");
 
-            String ext = oName.substring(oName.lastIndexOf(".")); //확장자
-            String sName = UUID.randomUUID().toString()+ ext;
+            if(!mf.isEmpty()){
 
-            log.info("sName..3 : "+sName);
+                String oName = mf.getOriginalFilename();
+                String ext = oName.substring(oName.lastIndexOf(".")); //확장자
+                String sName = UUID.randomUUID().toString()+ ext;
 
-            try {
-                mf.transferTo(new File(path, sName));
+                log.info("sName..3 : "+sName);
 
-                //파일 정보 생성
-                FileDTO fileDTO = FileDTO.builder()
-                        .oName(oName)
-                        .sName(sName)
-                        .build();
+                try {
+                    mf.transferTo(new File(path, sName));
 
-                log.info("uploadFile..4 : " + fileDTO);
-                //리스트 저장
-                files.add(fileDTO);
+                    //파일 정보 생성
+                    FileDTO fileDTO = FileDTO.builder()
+                            .oName(oName)
+                            .sName(sName)
+                            .build();
 
-            }catch (IOException e){
-                log.error("fileUpload : " + e.getMessage());
+                    log.info("uploadFile..4 : " + fileDTO);
+                    //리스트 저장
+                    files.add(fileDTO);
+
+                }catch (IOException e){
+                    log.error("fileUpload : " + e.getMessage());
+                }
             }
-
         }
 
         return files;
@@ -107,6 +106,21 @@ public class FileService {
             log.error("fileDownload : " + e.getMessage());
             return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
         }
+    }
 
+    public ResponseEntity<?> fileDownloadCount(int fno){
+        // 파일 조회
+        kr.co.sboard.entity.File file = fileRepository.findById(fno).get();
+        log.info("fileCount...1 : " + file);
+        // 다운로드 카운트 Json 생성
+        Map<String, Object> resultMap = new HashMap<>();
+
+        log.info("fileCount...2 : " + resultMap);
+
+        resultMap.put("count", file.getDownload());
+
+        log.info("fileCount...3 : " + resultMap);
+
+        return ResponseEntity.ok().body(resultMap);
     }
 }
