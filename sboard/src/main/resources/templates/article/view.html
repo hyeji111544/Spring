@@ -55,8 +55,8 @@
 
                                                 <textarea class="form-control" rows="3" readonly>${comment.content}</textarea>
                                                 <div class="text-end mt-1">
-                                                    <button type="button" class="btn btn-outline-secondary btn-sm">수정</button>
-                                                    <button type="button" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                    <button type="button" id="modifyComment" class="btn btn-outline-secondary btn-sm">수정</button>
+                                                    <button type="button" id="removeComment" class="btn btn-outline-dark btn-sm">삭제</button>
                                                 </div>
                                             </div>`;
 
@@ -68,7 +68,6 @@
 
 
             /* 댓글 등록 */
-
             const commentForm = document.commentForm
             commentForm.onsubmit = async function (e){
                 e.preventDefault();
@@ -84,6 +83,11 @@
 
                 console.log(data);
 
+                //댓글 전송 후 텍스트 영역 초기화
+                commentForm.content.value = '';
+
+
+
                 /* 댓글목록 동적 처리 */
 
                 const commentArticle = `<div class="mb-3">
@@ -94,8 +98,8 @@
 
                                                 <textarea class="form-control" rows="3" readonly>${data.content}</textarea>
                                                 <div class="text-end mt-1">
-                                                    <button type="button" class="btn btn-outline-secondary btn-sm">수정</button>
-                                                    <button type="button" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                    <button type="button" id="modifyComment" class="btn btn-outline-secondary btn-sm">수정</button>
+                                                    <button type="button" id="removeComment" class="btn btn-outline-dark btn-sm">삭제</button>
                                                 </div>
                                             </div>`;
 
@@ -103,6 +107,15 @@
                 commentList.insertAdjacentHTML('beforeend', commentArticle);
 
             }
+
+            /* 댓글 작성 취소 btnCancel */
+            const btnCancel = document.getElementById('btnCancel');
+
+            btnCancel.onclick = function (e){
+                e.preventDefault();
+                commentForm.content.value = ''
+            }
+
         }
     </script>
 
@@ -138,14 +151,19 @@
                     <textarea class="form-control" readonly id="exampleFormControlTextarea1" rows="10" name="content">[[${articleDTO.content}]]</textarea>
                 </div>
             </form>
+            <div class="text-start">
+                <a th:href="@{#}" class="btn btn-outline-secondary" id="btnRemove">삭제</a>
+                <a th:href="@{#}" class="btn btn-outline-dark" id="btnModify">수정</a>
+            </div>
+
 
                 <div class="text-end">
-                    <a th:href="@{/article/list}" class="btn btn-outline-secondary" id="btnSubmit">목록</a>
+                    <a th:href="@{/article/list(cate=${articleDTO.cate}, pg=${pg})}" class="btn btn-outline-secondary" id="btnSubmit">목록</a>
                     <!-- <button class="btn btn-outline-primary" id="btnSubmit">글수정</button> -->
                 </div>
 
                 <!-- 댓글 목록 시작-->
-                <div id="commentList" class="mb-3">
+                <div id="commentList">
                     <label for="exampleFormControlTextarea1" class="form-label">댓글목록</label>
 
                     <!--
@@ -179,7 +197,7 @@
                     </div>
 
                     <div class="mt-3 text-end">
-                        <button type="button" class="btn btn-outline-secondary">취소</button>
+                        <button type="button" id="btnCancel" class="btn btn-outline-secondary">취소</button>
                         <input type="submit" class="btn btn-outline-dark" value="댓글등록">
                     </div>
                 </form>

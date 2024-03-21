@@ -27,8 +27,8 @@ spring:
         url: jdbc:mysql://127.0.0.1:3306/jboard
         username: hyeji
     devtools:
-        livereload:
-            enabled: true
+        restart:
+            enabled: false
 
     # 이메일 설정
     mail:

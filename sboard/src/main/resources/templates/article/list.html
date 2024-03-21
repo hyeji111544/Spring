@@ -29,7 +29,7 @@
                 <tr th:each="articles, index:${pageResponseDTO.dtoList}">
                     <td>[[${pageResponseDTO.startNo - index.index}]]</td>
                     <td>
-                        <a th:href="@{/article/view(no=${articles.no}, cate=${articles.cate})}" class="text-dark">[[${articles.title}]]</a>
+                        <a th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg})}" class="text-dark">[[${articles.title}]]</a>
                     </td>
                     <td>[[${articles.writer}]]</td>
                     <td>[[${articles.hit}]]</td>
@@ -46,7 +46,8 @@
                     <li th:if="${pageResponseDTO.prev}" class="page-item">
                         <a class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}"> &laquo; </a>
                     </li>
-                    <li th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}" class="page-item">
+                    <li th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}"
+                        th:class="${num == pageResponseDTO.pg ? 'page-item active' : 'page-item'}">
                         <a class="page-link text-dark" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${num})}">[[${num}]]</a>
                     </li>
                     <li th:if="${pageResponseDTO.next}" class="page-item">
