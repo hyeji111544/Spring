@@ -4,7 +4,7 @@
 
 <div class="container-fluid px-4" layout:fragment="content">
 
-    <script>
+    <script th:inline="javascript">
         window.onload = function (){
 
             const fileLinks = document.getElementsByClassName('fileLink');
@@ -25,6 +25,49 @@
                     this.nextElementSibling.innerText = parseInt(count) + 1;
                 }
             }
+            /* 댓글 불러오기 */
+            const commentList = document.getElementById('commentList');
+            const commentPlaceholder = document.getElementById('commentPlaceholder');
+
+            // 상단 <script> 선언 태그에 th:inline="javascript" 속성 추가
+            const no = [[${articleDTO.no}]];
+
+            // fetchGet 함수는 await 비동기 실행되기 때문에 이벤트 핸들러 function 앞에 async 추가(문법적인 사항)
+            // 페이지 로드 후 바로 댓글목록 데이터를 요청하기 보다는 약간 2초정도 시간 뒤에 요청을 하면 좀더 안정적
+
+            setTimeout(async function(){
+
+                const comments = await  fetchGet(`/sboard/comment/${no}`);
+                console.log('comments : ' + comments);
+                if (comments.length === 0){
+                    console.log('댓글이 없습니다.');
+                    commentPlaceholder.remove();
+                    return;
+                }
+                for (const comment of comments){
+                    commentPlaceholder.remove();
+
+                    const commentArticle = `<div class="mb-3">
+                                                <ol class="breadcrumb mb-1">
+                                                    <li class="breadcrumb-item">${comment.writer}</li>
+                                                    <li class="breadcrumb-item">${comment.rdate.substring(0, 10)}</li>
+                                                </ol>
+
+                                                <textarea class="form-control" rows="3" readonly>${comment.content}</textarea>
+                                                <div class="text-end mt-1">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm">수정</button>
+                                                    <button type="button" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                </div>
+                                            </div>`;
+
+                    // 태그 문자열 삽입
+                    commentList.insertAdjacentHTML('beforeend', commentArticle);
+                }
+
+            }, 2000);
+
+
+            /* 댓글 등록 */
 
             const commentForm = document.commentForm
             commentForm.onsubmit = async function (e){
@@ -40,6 +83,24 @@
                 const data = await fetchPost(`/sboard/comment`, jsonData);
 
                 console.log(data);
+
+                /* 댓글목록 동적 처리 */
+
+                const commentArticle = `<div class="mb-3">
+                                                <ol class="breadcrumb mb-1">
+                                                    <li class="breadcrumb-item">${data.writer}</li>
+                                                    <li class="breadcrumb-item">${data.rdate.substring(0, 10)}</li>
+                                                </ol>
+
+                                                <textarea class="form-control" rows="3" readonly>${data.content}</textarea>
+                                                <div class="text-end mt-1">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm">수정</button>
+                                                    <button type="button" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                </div>
+                                            </div>`;
+
+                // 태그 문자열 삽입
+                commentList.insertAdjacentHTML('beforeend', commentArticle);
 
             }
         }
@@ -84,14 +145,33 @@
                 </div>
 
                 <!-- 댓글 목록 시작-->
-                <div class="mb-3">
+                <div id="commentList" class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">댓글목록</label>
-                    <textarea class="form-control" readonly rows="3"> 댓글 내용 </textarea>
-                </div>
-                <form name="commentForm" method="post">
-                    <input type="text" name="parent" th:value="${articleDTO.no}">
 
-                    <input type="text" name="writer" th:value="${#authentication.principal.user.uid}">
+                    <!--
+                        처음 글을 불러올때 댓글은 플레이스 홀더로 표시하고 이후 AJAX(fetch)로
+                        댓글 불러와서 플레이스 홀더를 제거하고 댓글을 출력
+                    -->
+                    <div class="mb-3 placeholder-glow" id="commentPlaceholder">
+                        <ol class="breadcrumb mb-1">
+                            <li class="breadcrumb-item bg-secondary placeholder col-1 me-1"></li>
+                            <li class="breadcrumb-item bg-secondary placeholder col-1"></li>
+                        </ol>
+
+                        <textarea class="form-control bg-secondary placeholder" rows="3" readonly></textarea>
+                        <div class="text-end mt-1">
+                            <button type="button" class="btn btn-secondary btn-sm placeholder disabled col-1"></button>
+                            <button type="button" class="btn btn-dark btn-sm placeholder disabled col-1"></button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <form name="commentForm" method="post">
+                    <input type="hidden" name="parent" th:value="${articleDTO.no}">
+
+                    <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
 
                     <div class="input-group">
                         <span class="input-group-text" >댓글 입력</span>

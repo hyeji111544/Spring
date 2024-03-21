@@ -15,4 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
         JPA 페이지네이션 처리를 위한 Page 타입으로 변환
      */
     public Page<Article> findByParentAndCate(int parent, String cate, Pageable pageable);
+
+    public List<Article> findByParent(int parent);
 }
