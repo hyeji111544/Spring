@@ -34,6 +34,7 @@ public class SecurityConfig {
         // 인과 설정
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/").authenticated()
+                .requestMatchers("/article/**").authenticated()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
                 .anyRequest().permitAll());

@@ -96,16 +96,7 @@ public class ArticleService {
 
     }
 
-    /*
-    public void insertComment(ArticleDTO articleDTO){
-       Article article = modelMapper.map(articleDTO, Article.class);
-        log.info("insertComment : " + article.toString());
-
-        articleRepository.save(article);
-
-    }
-  */
-
+    // insertComment 메서드 -> CommentService 클래스로 이동
     // fileUpload 메서드 -> FileService 클래스로 이동
 
 
