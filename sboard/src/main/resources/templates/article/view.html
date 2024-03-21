@@ -25,6 +25,43 @@
                     this.nextElementSibling.innerText = parseInt(count) + 1;
                 }
             }
+
+
+            /* 댓글 삭제 class="removeComment" */
+            document.addEventListener('click', function () {
+                const removeComment = document.querySelectorAll('.removeComment');
+
+                removeComment.forEach((item) => {
+                    item.addEventListener('click', function (event) {
+                        showModal('정말 댓글을 삭제하시겠습니까?');
+
+                        const deleteButton = document.querySelector('.modal-footer .btnOk');
+                        deleteButton.addEventListener('click', function () {
+                            const value = deleteButton.value;
+                            if (value === 'delete') {
+                                console.log('삭제버튼 클릭');
+
+                                const comment = item.closest('.comment');
+                                const no = item.dataset.no;
+                                console.log('no : ' + no);
+
+                                // DELETE용 fetch 함수 정의
+                                const data = fetchDelete(`/sboard/comment/${no}`);
+
+                                if(data){
+
+                                    comment.remove();
+
+                                }
+
+                            }
+                        });
+
+                    });
+                }); //item 종료
+            });
+
+
             /* 댓글 불러오기 */
             const commentList = document.getElementById('commentList');
             const commentPlaceholder = document.getElementById('commentPlaceholder');
@@ -47,7 +84,7 @@
                 for (const comment of comments){
                     commentPlaceholder.remove();
 
-                    const commentArticle = `<div class="mb-3">
+                    const commentArticle = `<div class="mb-3 comment">
                                                 <ol class="breadcrumb mb-1">
                                                     <li class="breadcrumb-item">${comment.writer}</li>
                                                     <li class="breadcrumb-item">${comment.rdate.substring(0, 10)}</li>
@@ -55,8 +92,8 @@
 
                                                 <textarea class="form-control" rows="3" readonly>${comment.content}</textarea>
                                                 <div class="text-end mt-1">
-                                                    <button type="button" id="modifyComment" class="btn btn-outline-secondary btn-sm">수정</button>
-                                                    <button type="button" id="removeComment" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm modifyComment" data-mode="modify" data-no="${comment.no}">수정</button>
+                                                    <button type="button" class="btn btn-outline-dark btn-sm removeComment" data-mode="remove" data-no="${comment.no}">삭제</button>
                                                 </div>
                                             </div>`;
 
@@ -98,13 +135,15 @@
 
                                                 <textarea class="form-control" rows="3" readonly>${data.content}</textarea>
                                                 <div class="text-end mt-1">
-                                                    <button type="button" id="modifyComment" class="btn btn-outline-secondary btn-sm">수정</button>
-                                                    <button type="button" id="removeComment" class="btn btn-outline-dark btn-sm">삭제</button>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm modifyComment">수정</button>
+                                                    <button type="button" class="btn btn-outline-dark btn-sm removeComment">삭제</button>
                                                 </div>
                                             </div>`;
 
                 // 태그 문자열 삽입
                 commentList.insertAdjacentHTML('beforeend', commentArticle);
+
+
 
             }
 
@@ -115,6 +154,10 @@
                 e.preventDefault();
                 commentForm.content.value = ''
             }
+
+
+
+
 
         }
     </script>

@@ -6,10 +6,12 @@ import kr.co.sboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,6 +41,30 @@ public class CommentService {
 
         return ResponseEntity.ok().body(articleDTOS);
 
+    }
+
+    public ResponseEntity<?> deleteComment(int no){
+        log.info("no : "+ no);
+        //삭제 전 조회
+        Optional<Article> optArticle = articleRepository.findById(no);
+
+        log.info("optArticle : " + optArticle);
+
+        if(optArticle.isPresent()){
+            log.info("deleteComment.....1");
+
+            articleRepository.deleteById(no);
+
+            return ResponseEntity
+                    .ok()
+                    .body(optArticle.get());
+        }else {
+            log.info("deleteComment.....2");
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
     }
 
 

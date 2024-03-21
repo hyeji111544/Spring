@@ -52,6 +52,33 @@ async function fetchPost(url, data){
     }
 }
 
+// fetch DELETE용
+async function fetchDelete(url){
+
+    try{
+        const response = await fetch(url, {
+            method: 'DELETE'
+        });
+
+        console.log(response);
+
+        if(!response.ok){
+            throw new Error('response not ok');
+        }
+
+        const data = await response.json();
+        console.log("data1 : " + data);
+
+        return data;
+
+    }catch (err) {
+        console.log(err)
+    }
+}
+
+
+
+
 function showModal(message){
     const modal = document.getElementById('resultModal');
     modal.getElementsByClassName('modal-body')[0].innerText = message;
