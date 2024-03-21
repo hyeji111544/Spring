@@ -67,5 +67,31 @@ public class CommentService {
         }
     }
 
+    public ResponseEntity<?> updateComment(ArticleDTO articleDTO){
+
+        // 수정 전 존재여부 확인
+        Optional<Article> optArticle = articleRepository.findById(articleDTO.getNo());
+
+        if(optArticle.isPresent()){
+
+            Article article = optArticle.get();
+            //Article Entity에 @Setter 선언함..
+            article.setContent(articleDTO.getContent());
+
+            log.info("updateComment....1 : " + article);
+
+            Article modifiedArticle = articleRepository.save(article);
+
+            // 수정 후 수정 데이터 반환
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(modifiedArticle);
+        }else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
+    }
+
 
 }

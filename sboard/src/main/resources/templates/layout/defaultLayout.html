@@ -122,13 +122,25 @@
 </div>
 
 <!-- 확인, 취소 버튼이 있는 Modal -->
-<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class="modal" id="confirmModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">내용</div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btnCancel" data-bs-dismiss="modal" >취소</button>
-                <button type="button" class="btn btn-outline-primary btnOk" data-bs-dismiss="modal" value="delete">확인</button>
+                <button type="button" class="btn btn-outline-secondary btnCancel" id="btnCancel" data-bs-dismiss="modal" >취소</button>
+                <button type="button" class="btn btn-outline-primary btnOk" id="btnOk">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 확인 버튼이 있는 Modal -->
+<div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">내용</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">확인</button>
             </div>
         </div>
     </div>

@@ -27,38 +27,93 @@
             }
 
 
-            /* 댓글 삭제 class="removeComment" */
-            document.addEventListener('click', function () {
-                const removeComment = document.querySelectorAll('.removeComment');
 
-                removeComment.forEach((item) => {
-                    item.addEventListener('click', function (event) {
-                        showModal('정말 댓글을 삭제하시겠습니까?');
+            document.addEventListener('click', async function(e){
 
-                        const deleteButton = document.querySelector('.modal-footer .btnOk');
-                        deleteButton.addEventListener('click', function () {
-                            const value = deleteButton.value;
-                            if (value === 'delete') {
-                                console.log('삭제버튼 클릭');
+                // 이벤트 대상의 클래스값이 remove일 경우
+                if(e.target.dataset.mode == 'remove'){
+                    e.preventDefault();
+                    // 해당 삭제에서 가장 가까운 부모 comment 문서객체 생성
+                    const comment = e.target.closest('.comment');
+                    // 댓글 번호
+                    const no = e.target.dataset.no;
+                    console.log('no : ' + no);
 
-                                const comment = item.closest('.comment');
-                                const no = item.dataset.no;
-                                console.log('no : ' + no);
-
-                                // DELETE용 fetch 함수 정의
-                                const data = fetchDelete(`/sboard/comment/${no}`);
-
-                                if(data){
-
-                                    comment.remove();
-
-                                }
-
+                    confirmModal("정말 댓글을 삭제하시겠습니까?").then((result) => {
+                        if (result) {
+                            // DELETE용 fetch 함수 정의
+                            const data = fetchDelete(`/sboard/comment/${no}`);
+                            if (data) {
+                                alertModal("삭제 되었습니다.");
+                                comment.remove();
                             }
-                        });
-
+                        }
                     });
-                }); //item 종료
+
+
+                }else if(e.target.dataset.mode == 'modify'){
+
+                    // 수정모드
+                    const comment = e.target.closest('.comment');
+                    const textarea = comment.getElementsByTagName('textarea')[0];
+                    const btnModify = comment.getElementsByClassName('modifyComment')[0];
+                    const btnRemove = comment.getElementsByClassName('removeComment')[0];
+
+                    console.log(textarea);
+
+                    textarea.readOnly = false;
+                    textarea.style.outline = "1px solid #111"
+                    textarea.focus();
+                    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+                    btnModify.innerText = "수정완료"
+                    btnModify.dataset.mode = 'update';
+
+                    btnRemove.innerText = "취소"
+                    btnRemove.dataset.mode = 'cancel';
+
+                }else if(e.target.dataset.mode == 'cancel') {
+                    //alertModal("취소!");
+                    const comment = e.target.closest('.comment');
+                    const textarea = comment.getElementsByTagName('textarea')[0];
+                    const btnModify = comment.getElementsByClassName('modifyComment')[0];
+                    const btnRemove = comment.getElementsByClassName('removeComment')[0];
+
+                    textarea.readOnly = true;
+                    textarea.style.outline = 'none';
+                    btnModify.dataset.mode = 'modify';
+                    btnModify.innerText = "수정";
+                    btnRemove.innerText = "삭제";
+                    btnRemove.dataset.mode = 'remove';
+
+                }else if(e.target.dataset.mode == 'update') {
+
+                    const comment = e.target.closest('.comment');
+                    const textarea = comment.getElementsByTagName('textarea')[0];
+                    const btnModify = comment.getElementsByClassName('modifyComment')[0];
+                    const btnRemove = comment.getElementsByClassName('removeComment')[0];
+                    const no = comment.dataset.no;
+
+                    const jsonData = {
+                        "no": no,
+                        "content": textarea.value
+                    }
+
+                    console.log(jsonData);
+
+                    textarea.readOnly = true;
+                    textarea.style.outline = "none";
+                    btnModify.innerText = "수정";
+                    btnRemove.innerText = "삭제";
+
+                    // PUT용 fetch 함수 정의(util.js)
+                    const data = fetchPut(`/sboard/comment`, jsonData);
+
+                    console.log(data);
+
+                    alertModal("수정이 완료 되었습니다.");
+
+                }
             });
 
 
@@ -84,7 +139,7 @@
                 for (const comment of comments){
                     commentPlaceholder.remove();
 
-                    const commentArticle = `<div class="mb-3 comment">
+                    const commentArticle = `<div class="mb-3 comment" data-no="${comment.no}">
                                                 <ol class="breadcrumb mb-1">
                                                     <li class="breadcrumb-item">${comment.writer}</li>
                                                     <li class="breadcrumb-item">${comment.rdate.substring(0, 10)}</li>
@@ -127,7 +182,7 @@
 
                 /* 댓글목록 동적 처리 */
 
-                const commentArticle = `<div class="mb-3">
+                const commentArticle = `<div class="mb-3 comment" data-no="${data.no}">
                                                 <ol class="breadcrumb mb-1">
                                                     <li class="breadcrumb-item">${data.writer}</li>
                                                     <li class="breadcrumb-item">${data.rdate.substring(0, 10)}</li>
