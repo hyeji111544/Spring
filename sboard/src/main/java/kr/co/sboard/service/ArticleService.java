@@ -69,7 +69,7 @@ public class ArticleService {
         return articleDTO;
     }
 
-    public void insertArticle(ArticleDTO articleDTO){
+    public Article insertArticle(ArticleDTO articleDTO){
 
         // 파일 첨부 처리
         List<FileDTO> files = fileService.fileUpload(articleDTO);
@@ -94,6 +94,7 @@ public class ArticleService {
             fileRepository.save(file);
         }
 
+        return savedArticle;
     }
 
     // insertComment 메서드 -> CommentService 클래스로 이동

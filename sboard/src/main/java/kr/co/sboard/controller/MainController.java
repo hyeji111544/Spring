@@ -1,5 +1,8 @@
 package kr.co.sboard.controller;
 
+import kr.co.sboard.config.AppInfo;
+import kr.co.sboard.entity.User;
+import kr.co.sboard.security.MyUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.info.BuildProperties;
@@ -13,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    // 빌드 정보 객체를 주입 받기 위해 build.gradle 파일 맨 밑에 buildInfo() 실행 해야됨
-    private final BuildProperties buildProperties;
 
     /*
         - SecurityContextHolder에 저장된 Authentication 사용자 인증객체에서 Principal 즉 MyUserDetails(User 엔티티)를 구해 View에 email 출력
@@ -24,21 +25,12 @@ public class MainController {
     @GetMapping(value = {"/", "/index"})
     public String index(Authentication authentication, Model model){
 
-        // SecurityContextHolder의 Authentication의 principal 가져오기
-        /*
+        //SecurityContextHolder의 Authentication의 principal 가져오기
+/*
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser();
         log.info("user : " + user);
-        */
-
-        // 상단 BuildProperties 주입
-        String appName = buildProperties.getName();
-        String appVersion = buildProperties.getVersion();
-        log.info("appVersion : " + appVersion);
-
-        // View 에 출력할 데이터 모델 참조
-        model.addAttribute("appName", appName);
-        model.addAttribute("appVersion", appVersion);
+*/
 
         return "/index";
     }

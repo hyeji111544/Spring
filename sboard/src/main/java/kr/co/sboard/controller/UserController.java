@@ -4,19 +4,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.sboard.dto.TermsDTO;
 import kr.co.sboard.dto.UserDTO;
+import kr.co.sboard.config.AppInfo;
 import kr.co.sboard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,10 +22,12 @@ import java.util.Objects;
 public class UserController {
 
     private final UserService userService;
+    private final AppInfo appInfo;
 
     @GetMapping("/user/login")
-    public String login(@ModelAttribute("success") String success){
+    public String login(@ModelAttribute("success") String success, Model model){
         // 매개변수 success에 @ModelAttribute 선언으로 View 참조할 수 있음
+
         return "/user/login";
     }
 

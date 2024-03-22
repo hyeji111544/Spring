@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layout/defaultLayout.html">
+      layout:decorate="~{/layout/defaultLayout.html}">
 
 <div class="container-fluid px-4" layout:fragment="content">
 
@@ -21,7 +21,10 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            000 글쓰기
+                <span th:if="${cate == 'notice'}">공지사항 글쓰기</span>
+                <span th:if="${cate == 'free'}">자유게시판 글쓰기</span>
+                <span th:if="${cate == 'faq'}">자주묻는질문 글쓰기</span>
+                <span th:if="${cate == 'qna'}">묻고답하기 글쓰기</span>
         </div>
         <div class="card-body">
 
@@ -46,7 +49,8 @@
 
     <div class="text-end">
         <a th:href="@{/article/list}" class="btn btn-outline-secondary">취소</a>
-        <a th:href="@{/article/write}" class="btn btn-outline-primary" id="btnSubmit">글등록</a>
+        <a th:href="@{#}" class="btn btn-outline-primary" id="btnSubmit">글등록</a>
+        <p>[[${cate}]]</p>
     </div>
 
     <!-- 내용 끝 -->

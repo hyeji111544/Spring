@@ -1,8 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layout/defaultLayout.html">
+      layout:decorate="~{/layout/defaultLayout.html}">
 
 <div class="container-fluid px-4" layout:fragment="content">
+
     <h3 class="mt-4 mb-4">게시판 목록</h3>
 
 
@@ -10,7 +11,10 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            OOO 글목록
+                <span th:if="${pageResponseDTO.cate == 'notice'}">공지사항 글목록</span>
+                <span th:if="${pageResponseDTO.cate == 'free'}">자유게시판 글목록</span>
+                <span th:if="${pageResponseDTO.cate == 'faq'}">자주묻는질문 글목록</span>
+                <span th:if="${pageResponseDTO.cate == 'qna'}">묻고답하기 글목록</span>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -29,7 +33,7 @@
                 <tr th:each="articles, index:${pageResponseDTO.dtoList}">
                     <td>[[${pageResponseDTO.startNo - index.index}]]</td>
                     <td>
-                        <a th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg})}" class="text-dark">[[${articles.title}]]</a>
+                        <a th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg})}" class="text-dark ">[[${articles.title}]]</a>
                     </td>
                     <td>[[${articles.writer}]]</td>
                     <td>[[${articles.hit}]]</td>

@@ -1,7 +1,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layout/userLayout.html">
+      layout:decorate="~{/layout/userLayout.html}">
 
 <div class="container" layout:fragment="content">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -47,7 +47,7 @@
 
                 setTimeout(async () => {
 
-                    const data = await fetchData(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
 
                     if(data.result > 0){
                         spinner.classList.add('d-none');
@@ -131,7 +131,7 @@
 
                 setTimeout(async () => {
 
-                    const data = await fetchData(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
 
                     if(data.result > 0){
                         spinner.classList.add('d-none');
@@ -170,7 +170,7 @@
                 spinner.classList.remove('d-none');
 
                 setTimeout(async () => {
-                    const data = await fetchData(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
 
                     if(data.result > 0){
                         spinner.classList.add('d-none');
@@ -214,7 +214,7 @@
                     spinner.classList.add('d-none');
                     divEmailCode.classList.remove('d-none');
 
-                    const data = await fetchData(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
                     console.log('data : ' + data.result);
 
                     if(data.result > 0){
@@ -237,7 +237,7 @@
 
                 const value = inputEmailCodes[0].value;
 
-                const data = await fetchData(`/sboard/email/${value}`);
+                const data = await fetchGet(`/sboard/email/${value}`);
 
                 if(!data.result){
                     showInputInvalid(inputEmails);

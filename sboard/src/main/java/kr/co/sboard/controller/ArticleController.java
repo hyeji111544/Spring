@@ -1,9 +1,11 @@
 package kr.co.sboard.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.sboard.config.AppInfo;
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.PageRequestDTO;
 import kr.co.sboard.dto.PageResponseDTO;
+import kr.co.sboard.entity.Article;
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +25,16 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final AppInfo appInfo;
 
     /*
         @ModelAttribute("cate")
          - modelAttribute("cate", cate)와 동일
     */
     @GetMapping("/article/list")
-    public String list(Model model, PageRequestDTO pageRequestDTO) {
+    public String list(Model model, PageRequestDTO pageRequestDTO, @ModelAttribute("cate") String cate) {
         PageResponseDTO pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
+
         log.info("pageResponseDTO : " + pageResponseDTO);
 
         model.addAttribute(pageResponseDTO);
@@ -45,7 +49,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article/write")
-    public String write(HttpServletRequest req, ArticleDTO articleDTO){
+    public String write(HttpServletRequest req, ArticleDTO articleDTO ,Model model){
         /*
             글작성을 테스트할 때는 로그인해야하기 때문에
             SecurityConfig 인가 설정 수정할 것
@@ -54,10 +58,13 @@ public class ArticleController {
         articleDTO.setRegip(regip);
 
         log.info(articleDTO.toString());
+        String cate = articleDTO.getCate();
 
-        articleService.insertArticle(articleDTO);
 
-        return "redirect:/article/list";
+       Article article= articleService.insertArticle(articleDTO);
+       int no =article.getNo();
+
+        return "redirect:/article/view?no="+no+"&cate="+cate;
     }
 
     @GetMapping("/article/view")

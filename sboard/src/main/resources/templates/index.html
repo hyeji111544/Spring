@@ -1,7 +1,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layout/defaultLayout.html">
+      layout:decorate="~{/layout/defaultLayout.html}">
 
 <div class="container-fluid px-4" layout:fragment="content">
     <h1 class="mt-4">메인</h1>
@@ -13,49 +13,35 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            DataTable Example
+            게시판
         </div>
         <div class="card-body">
             <table id="datatablesSimple">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-                </tfoot>
-                <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
-                    <td>$320,800</td>
-                </tr>
-                <tr>
-                    <td>Garrett Winters</td>
-                    <td>Accountant</td>
-                    <td>Tokyo</td>
-                    <td>63</td>
-                    <td>2011/07/25</td>
-                    <td>$170,750</td>
-                </tr>
 
-                </tbody>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a class="nav-link list-group-item-action" th:href="@{/article/list(cate=notice)}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-solid fa-hashtag"></i></div>
+                            <span>공지사항</span></a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="nav-link list-group-item-action" th:href="@{/article/list(cate=free)}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-solid fa-hashtag"></i></div>
+                            <span>자유게시판</span></a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="nav-link list-group-item-action" th:href="@{/article/list(cate=faq)}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-solid fa-hashtag"></i></div>
+                            <span>자주묻는 질문</span></a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="nav-link list-group-item-action" th:href="@{/article/list(cate=qna)}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-solid fa-hashtag"></i></div>
+                            <span>묻고 답하기</span></a>
+                    </li>
+                </ul>
+
+
             </table>
         </div>
     </div>

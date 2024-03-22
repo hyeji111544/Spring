@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layout/defaultLayout.html">
+      layout:decorate="~{/layout/defaultLayout.html}">
 
 <div class="container-fluid px-4" layout:fragment="content">
 
@@ -146,10 +146,12 @@
                                                 </ol>
 
                                                 <textarea class="form-control" rows="3" readonly>${comment.content}</textarea>
-                                                <div class="text-end mt-1">
-                                                    <button type="button" class="btn btn-outline-secondary btn-sm modifyComment" data-mode="modify" data-no="${comment.no}">수정</button>
-                                                    <button type="button" class="btn btn-outline-dark btn-sm removeComment" data-mode="remove" data-no="${comment.no}">삭제</button>
-                                                </div>
+
+                                                    <div class="text-end mt-1">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm modifyComment" data-mode="modify" data-no="${comment.no}">수정</button>
+                                                        <button type="button" class="btn btn-outline-dark btn-sm removeComment" data-mode="remove" data-no="${comment.no}">삭제</button>
+                                                    </div>
+
                                             </div>`;
 
                     // 태그 문자열 삽입
@@ -223,7 +225,10 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            000 글보기
+                <span th:if="${articleDTO.cate == 'notice'}">공지사항 글보기</span>
+                <span th:if="${articleDTO.cate == 'free'}">자유게시판 글보기</span>
+                <span th:if="${articleDTO.cate == 'faq'}">자주묻는질문 글보기</span>
+                <span th:if="${articleDTO.cate == 'qna'}">묻고답하기 글보기</span>
         </div>
         <div class="card-body">
 
@@ -249,11 +254,12 @@
                     <textarea class="form-control" readonly id="exampleFormControlTextarea1" rows="10" name="content">[[${articleDTO.content}]]</textarea>
                 </div>
             </form>
-            <div class="text-start">
-                <a th:href="@{#}" class="btn btn-outline-secondary" id="btnRemove">삭제</a>
-                <a th:href="@{#}" class="btn btn-outline-dark" id="btnModify">수정</a>
-            </div>
-
+            <th:block th:if = "${#authentication.principal.user.uid == articleDTO.writer}">
+                <div class="text-start">
+                    <a th:href="@{#}" class="btn btn-outline-secondary" id="btnRemove">삭제</a>
+                    <a th:href="@{#}" class="btn btn-outline-dark" id="btnModify">수정</a>
+                </div>
+            </th:block>
 
                 <div class="text-end">
                     <a th:href="@{/article/list(cate=${articleDTO.cate}, pg=${pg})}" class="btn btn-outline-secondary" id="btnSubmit">목록</a>
