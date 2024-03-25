@@ -237,7 +237,7 @@
 
                 const value = inputEmailCodes[0].value;
 
-                const data = await fetchGet(`/sboard/user/email/${value}`);
+                const data = await fetchGet(`/sboard/email/${value}`);
 
                 if(!data.result){
                     showInputInvalid(inputEmails);
@@ -263,32 +263,32 @@
             document.registerForm.onsubmit = function (){
 
                 if(!isUidOk){
-                    alertModal('아이디가 유효하지 않습니다.');
+                    showModal('아이디가 유효하지 않습니다.');
                     return false;
                 }
 
                 if(!isPassOk){
-                    alertModal('비밀번호가 유효하지 않습니다.');
+                    showModal('비밀번호가 유효하지 않습니다.');
                     return false;
                 }
 
                 if(!isNameOk){
-                    alertModal('이름이 유효하지 않습니다.');
+                    showModal('이름이 유효하지 않습니다.');
                     return false;
                 }
 
                 if(!isNickOk){
-                    alertModal('별명이 유효하지 않습니다.');
+                    showModal('별명이 유효하지 않습니다.');
                     return false;
                 }
 
                 if(!isEmailOk){
-                    alertModal('이메일이 유효하지 않습니다.');
+                    showModal('이메일이 유효하지 않습니다.');
                     return false;
                 }
 
                 if(!isHpOk){
-                    alertModal('휴대폰이 유효하지 않습니다.');
+                    showModal('휴대폰이 유효하지 않습니다.');
                     return false;
                 }
 

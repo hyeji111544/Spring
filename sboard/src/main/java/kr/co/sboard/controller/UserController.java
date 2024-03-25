@@ -7,13 +7,16 @@ import kr.co.sboard.dto.UserDTO;
 import kr.co.sboard.config.AppInfo;
 import kr.co.sboard.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -82,6 +85,27 @@ public class UserController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<?> sendEmailForFindUser(HttpSession session,
+                                                  @PathVariable("email") String email){
+
+        try {
+            userService.sendEmailCode(session, email);
+            // 이메일 성공적으로 보내짐을 클라이언트에게 응답
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("success", true);
+            return ResponseEntity.ok().body(resultMap);
+        } catch (Exception e) {
+            // 이메일 전송 실패시 클라이언트에게 오류 응답
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("success", false);
+            errorMap.put("message", "이메일 전송에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
+        }
+    }
+
+
     // 인증 코드 검사
     @ResponseBody
     @GetMapping("/email/{code}")
@@ -103,5 +127,39 @@ public class UserController {
             return ResponseEntity.ok().body(resultMap);
         }
     }
+
+    @GetMapping("/user/findId")
+    public String findId(){
+        return "/user/findId";
+    }
+    @PostMapping("/user/findId")
+    public ResponseEntity<?> findId(@RequestBody UserDTO userDTO){
+        String uid =userDTO.getUid();
+        String email =userDTO.getEmail();
+        return userService.findIdAndEmail(uid, email);
+
+    }
+
+    @GetMapping("/user/findIdResult")
+    public String findIdResult(@PathVariable("uid") String uid, Model model){
+
+        UserDTO userDTO = userService.selectUser(uid);
+        model.addAttribute(userDTO);
+        log.info(userDTO.toString());
+
+        return "/user/findIdResult";
+    }
+
+    @GetMapping("/user/findPassword")
+    public String findPassword(){
+        return "/user/findPassword";
+    }
+
+    @GetMapping("/user/findPasswordChange")
+    public String findPasswordChange(){
+        return "/user/findPasswordChange";
+    }
+
+
 
 }

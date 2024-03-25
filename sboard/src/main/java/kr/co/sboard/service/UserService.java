@@ -6,14 +6,21 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import kr.co.sboard.dto.TermsDTO;
 import kr.co.sboard.dto.UserDTO;
+import kr.co.sboard.entity.User;
 import kr.co.sboard.mapper.UserMapper;
+import kr.co.sboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -22,7 +29,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UserService {
 
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final ModelMapper modelMapper;
 
     // JavaMailSender 주입
     private final JavaMailSender javaMailSender;
@@ -41,6 +51,41 @@ public class UserService {
 
     public int selectCountUser(String type, String value) {
         return userMapper.selectCountUser(type, value);
+    }
+
+    public UserDTO selectUser(String uid){
+        Optional<User> optUser = userRepository.findById(uid);
+        log.info("findById ...1 "+ optUser);
+
+        UserDTO userDTO = null;
+        if (optUser.isPresent()){
+            User user = optUser.get();
+            log.info("findById ...2 " + user.toString());
+
+            userDTO = modelMapper.map(user, UserDTO.class);
+            log.info("findById ...3 " + userDTO);
+        }
+
+        return userDTO;
+
+    }
+
+    public ResponseEntity<?> findIdAndEmail(String uid, String email){
+        log.info("uid :" + uid);
+        log.info("email :" + email);
+        Optional<User> optUser = userRepository.findUserByUidAndEmail(uid, email);
+
+        log.info("findUser..." + optUser);
+
+        if (optUser.isPresent()){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(optUser);
+        }else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
     }
 
     /*
