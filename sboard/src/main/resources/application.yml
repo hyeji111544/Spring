@@ -1,6 +1,6 @@
 logging:
     file:
-        name: sboard
+        name: logs/sboard.log
     level:
         jdbc:
             connection: info

@@ -10,9 +10,12 @@ import kr.co.sboard.repository.ArticleRepository;
 import kr.co.sboard.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -95,6 +98,57 @@ public class ArticleService {
         }
 
         return savedArticle;
+    }
+
+    public ResponseEntity<?> deleteArticle(int no){
+        log.info("no : "+ no);
+
+        Optional<Article> optArticle = articleRepository.findById(no);
+
+        log.info("optArticle : " + optArticle);
+
+        if(optArticle.isPresent()){
+            log.info("deleteArticle.....1");
+
+            articleRepository.deleteById(no);
+
+            return ResponseEntity
+                    .ok()
+                    .body(optArticle.get());
+        }else {
+            log.info("deleteArticle.....2");
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
+    }
+
+    public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
+
+        // 수정 전 존재여부 확인
+        Optional<Article> optArticle = articleRepository.findById(articleDTO.getNo());
+
+        if(optArticle.isPresent()){
+            Article article = optArticle.get();
+
+            article.setContent(articleDTO.getContent());
+            article.setTitle(articleDTO.getTitle());
+
+
+            log.info("updateArticle....1" + article);
+
+            Article modifiedArticle = articleRepository.save(article);
+
+            // 수정 후 수정 데이터 반환
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(modifiedArticle);
+        }else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
     }
 
     // insertComment 메서드 -> CommentService 클래스로 이동

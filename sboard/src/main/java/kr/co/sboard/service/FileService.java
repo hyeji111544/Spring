@@ -1,8 +1,12 @@
 package kr.co.sboard.service;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.FileDTO;
+import kr.co.sboard.entity.Article;
+import kr.co.sboard.repository.ArticleRepository;
 import kr.co.sboard.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +34,7 @@ import java.util.*;
 public class FileService {
 
     private final FileRepository fileRepository;
+    private final ArticleRepository articleRepository;
 
     @Value("${file.upload.path}")
     private  String fileUploadPath;
@@ -73,6 +78,48 @@ public class FileService {
         }
 
         return files;
+    }
+
+    public Article deleteFile(int fno){
+
+        //파일 조회
+        Optional<kr.co.sboard.entity.File> optFile = fileRepository.findById(fno);
+        log.info("fileDelete...1" + optFile);
+
+        if (optFile.isPresent()){
+
+            kr.co.sboard.entity.File file = optFile.get();
+            int ano = file.getAno(); // 파일과 연관된 게시글 번호를 가져옴
+
+            log.info("fileDelete...2");
+            fileRepository.deleteById(fno);
+
+            Optional<Article> optArticle = articleRepository.findById(ano);
+            if(optArticle.isPresent()){
+                log.info("fileDelete...4" + optArticle.toString());
+                return optArticle.get();
+            }else {
+                log.info("fileDelete...5");
+                return null;
+            }
+
+        }else {
+            log.info("fileDelete...6");
+            return null;
+        }
+
+    }
+
+    public int deleteFiles(HttpServletRequest req, int ano){
+        fileRepository.deleteById(ano);
+
+        // 업로드 디렉토리 파일 삭제
+        ServletContext ctx = req.getServletContext();
+        String uploadPath = ctx.getRealPath("/uploads");
+
+
+        return ano;
+
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,4 +27,6 @@ public class FileController {
         log.info("fileDownloadCount : " + fno);
         return fileService.fileDownloadCount(fno);
     }
+
+
 }

@@ -49,6 +49,7 @@ async function fetchPost(url, data){
 
     }catch (err) {
         console.log(err)
+        return null;
     }
 }
 

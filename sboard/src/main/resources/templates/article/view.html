@@ -5,13 +5,13 @@
 <div class="container-fluid px-4" layout:fragment="content">
 
     <script th:inline="javascript">
-        window.onload = function (){
+        window.onload = function () {
 
             const fileLinks = document.getElementsByClassName('fileLink');
 
-            for (const fileLink of fileLinks){
+            for (const fileLink of fileLinks) {
                 // 파일 다운로드 요청과 동시에 다운로드 카운트 요청
-                fileLink.onclick = async function(){
+                fileLink.onclick = async function () {
                     /*
                     const fno = this.dataset.fno;
 
@@ -27,11 +27,10 @@
             }
 
 
-
-            document.addEventListener('click', async function(e){
+            document.addEventListener('click', async function (e) {
 
                 // 이벤트 대상의 클래스값이 remove일 경우
-                if(e.target.dataset.mode == 'remove'){
+                if (e.target.dataset.mode == 'remove') {
                     e.preventDefault();
                     // 해당 삭제에서 가장 가까운 부모 comment 문서객체 생성
                     const comment = e.target.closest('.comment');
@@ -51,7 +50,7 @@
                     });
 
 
-                }else if(e.target.dataset.mode == 'modify'){
+                } else if (e.target.dataset.mode == 'modify') {
 
                     // 수정모드
                     const comment = e.target.closest('.comment');
@@ -72,7 +71,7 @@
                     btnRemove.innerText = "취소"
                     btnRemove.dataset.mode = 'cancel';
 
-                }else if(e.target.dataset.mode == 'cancel') {
+                } else if (e.target.dataset.mode == 'cancel') {
                     //alertModal("취소!");
                     const comment = e.target.closest('.comment');
                     const textarea = comment.getElementsByTagName('textarea')[0];
@@ -86,7 +85,7 @@
                     btnRemove.innerText = "삭제";
                     btnRemove.dataset.mode = 'remove';
 
-                }else if(e.target.dataset.mode == 'update') {
+                } else if (e.target.dataset.mode == 'update') {
 
                     const comment = e.target.closest('.comment');
                     const textarea = comment.getElementsByTagName('textarea')[0];
@@ -127,16 +126,16 @@
             // fetchGet 함수는 await 비동기 실행되기 때문에 이벤트 핸들러 function 앞에 async 추가(문법적인 사항)
             // 페이지 로드 후 바로 댓글목록 데이터를 요청하기 보다는 약간 2초정도 시간 뒤에 요청을 하면 좀더 안정적
 
-            setTimeout(async function(){
+            setTimeout(async function () {
 
-                const comments = await  fetchGet(`/sboard/comment/${no}`);
+                const comments = await fetchGet(`/sboard/comment/${no}`);
                 console.log('comments : ' + comments);
-                if (comments.length === 0){
+                if (comments.length === 0) {
                     console.log('댓글이 없습니다.');
                     commentPlaceholder.remove();
                     return;
                 }
-                for (const comment of comments){
+                for (const comment of comments) {
                     commentPlaceholder.remove();
 
                     const commentArticle = `<div class="mb-3 comment" data-no="${comment.no}">
@@ -163,13 +162,13 @@
 
             /* 댓글 등록 */
             const commentForm = document.commentForm
-            commentForm.onsubmit = async function (e){
+            commentForm.onsubmit = async function (e) {
                 e.preventDefault();
 
                 const jsonData = {
-                    "parent"  : commentForm.parent.value,
-                    "writer"  : commentForm.writer.value,
-                    "content" : commentForm.content.value
+                    "parent": commentForm.parent.value,
+                    "writer": commentForm.writer.value,
+                    "content": commentForm.content.value
                 };
                 console.log(jsonData);
 
@@ -179,7 +178,6 @@
 
                 //댓글 전송 후 텍스트 영역 초기화
                 commentForm.content.value = '';
-
 
 
                 /* 댓글목록 동적 처리 */
@@ -201,18 +199,49 @@
                 commentList.insertAdjacentHTML('beforeend', commentArticle);
 
 
-
             }
 
             /* 댓글 작성 취소 btnCancel */
             const btnCancel = document.getElementById('btnCancel');
 
-            btnCancel.onclick = function (e){
+            btnCancel.onclick = function (e) {
                 e.preventDefault();
                 commentForm.content.value = ''
             }
+            /*id="btnModify*/
+            const btnModify = document.getElementById('btnModify');
+            if(btnModify != null){
+                btnModify.onclick = () => {
+                    confirmModal('수정 하시겠습니까?').then((result) => {
+                        if (result) {
+                            // 현재 URL에서 pg, no, cate 값을 추출합니다.
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const pg = urlParams.get('pg');
+                            const no = urlParams.get('no');
+                            const cate = urlParams.get('cate');
 
+                            // 추출한 값을 가지고 /sboard/article/modify 로 이동합니다.
+                            window.location.href = `/sboard/article/modify?no=${no}&cate=${cate}&pg=${pg}`;
+                        }
+                    });
+                };
+            }
 
+            /* 게시글 삭제 */
+            btnRemove.onclick = function (e){
+                const urlParams = new URLSearchParams(window.location.search);
+                const cate = urlParams.get('cate');
+                console.log(no);
+                confirmModal('게시글을 삭제 하시겠습니까?').then((result) =>{
+                    if (result){
+                        fetchDelete(`/sboard/article/${no}`).then(()=>{
+                            alertModal('게시글이 삭제되었습니다.');
+                            window.location.href = `/sboard/article/list?cate=${cate}`;
+                        });
+                    }
+                });
+
+            }
 
 
 

@@ -13,11 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +21,8 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final FileService fileService;
+
     private final AppInfo appInfo;
 
     /*
@@ -64,7 +62,7 @@ public class ArticleController {
        Article article= articleService.insertArticle(articleDTO);
        int no =article.getNo();
 
-        return "redirect:/article/view?no="+no+"&cate="+cate;
+        return "redirect:/article/list?cate="+cate;
     }
 
     @GetMapping("/article/view")
@@ -77,5 +75,28 @@ public class ArticleController {
     }
 
     // fileDownload 메서드 FileController 로 이동
+
+    @GetMapping("/article/modify")
+    public String modify(int no , int pg, Model model){
+        ArticleDTO articleDTO = articleService.findById(no);
+        model.addAttribute(articleDTO);
+        model.addAttribute("pg", pg);
+        log.info("pg : " + pg);
+        log.info(articleDTO.toString());
+        return "/article/modify";
+    }
+
+    @PutMapping("/article/modify")
+    public ResponseEntity<?> modifyArticle(@RequestBody ArticleDTO articleDTO, HttpServletRequest req){
+        return articleService.updateArticle(articleDTO);
+
+    }
+
+    @DeleteMapping("/article/{no}")
+    public ResponseEntity<?> deleteArticle(@PathVariable("no") int no){
+
+        return articleService.deleteArticle(no);
+    }
+
 
 }
