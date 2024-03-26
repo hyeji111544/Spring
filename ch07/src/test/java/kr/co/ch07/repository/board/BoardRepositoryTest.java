@@ -92,6 +92,7 @@ class BoardRepositoryTest {
         List<Article> articles = articleRepository.findAll();
         for(Article article : articles){
 
+
             log.info(article.toString());
         }
 
