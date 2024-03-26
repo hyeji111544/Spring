@@ -89,8 +89,12 @@
                         <input class="form-control w-75 mb-2 inputAddr1" type="text" name="add1" readonly placeholder="기본주소 입력" th:value="${userDTO.getAddr1()}" />
                         <input class="form-control w-75 mb-2 inputAddr2" type="text" name="addr2" placeholder="상세주소 입력" th:value="${userDTO.getAddr2()}"/>
                     </td>
-
-
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-end">
+                        <a th:href="@{#}" class="btn btn-outline-secondary">회원탈퇴</a>
+                    </td>
                 </tr>
 
             </table>
@@ -100,10 +104,6 @@
 
     </div>
 
-    <div class="text-end mb-4">
-        <a th:href="@{#}" class="btn btn-danger">회원탈퇴</a>
-        <a th:href="@{#}" class="btn btn-warning">수정완료</a>
-    </div>
     <!-- 내용 끝 -->
 </div>
 </html>
