@@ -21,8 +21,8 @@ class UserRepositoryTest {
     public void findUserByUidAndEmail(){
 
         User user = User.builder()
-                .uid("sss102")
-                .email("메일").build();
+                .name("김철수")
+                .email("matal_158@naver.com").build();
 
 
     }

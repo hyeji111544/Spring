@@ -1,0 +1,109 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/defaultLayout}">
+<!--
+    날짜 : 2024/03/25
+    이름 : 김철학
+    내용 : 나의 설정 구현하기
+
+    - http://localhost:8080/sboard/my/setting
+    - 회원정보 수정 및 탈퇴 기능
+    - 회원탈퇴는 해당 사용자의 아이디만 남기고 모두 컬럼의 값을 null 업데이트
+-->
+
+<div class="container-fluid px-4" layout:fragment="content">
+
+    <h3 class="mt-4 mb-4">나의 설정</h3>
+
+    <!-- 내용 시작 -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            기본정보
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <td class="col-md-2">아이디</td>
+                    <td class="col-md-10"><input class="form-control w-50" type="text" name="uid" readonly th:value="${userDTO.getUid()}"></td>
+                </tr>
+                <tr>
+                    <td>비밀번호</td>
+                    <td><input class="form-control w-50 inputPass" type="text" name="pass1">
+                    <div id="resultPass" class="d-block"></div></td>
+                </tr>
+                <tr>
+                    <td>비밀번호 확인</td>
+                    <td class="d-flex">
+                        <input class="form-control w-50 inputPass" type="text" name="pass2">
+                        <button class="btn btn-primary ms-2" id="changePasswordBtn">비밀번호 변경</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>회원가입일</td>
+                    <td><input class="form-control border-0" type="text" name="regDate" readonly th:value="${#temporals.format(userDTO.getRegDate(), 'yyyy-MM-dd HH:mm:ss')}">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            개인정보 수정
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <td class="col-md-2">이름</td>
+                    <td class="col-md-10"><input class="form-control w-50 inputName" type="text" name="name" th:value="${userDTO.getName()}">
+                        <div id="resultName" class="d-block"></div></td>
+                </tr>
+                <tr>
+                    <td>별명</td>
+                    <td class="d-flex">
+                        <input class="form-control w-50 inputNick" type="text" name="nick" th:value="${userDTO.getNick()}">
+                        <button class="btn btn-primary ms-2" id="btnCheckNick">중복확인</button>
+                        <div id="resultNick" class="d-block"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>이메일</td>
+                    <td class="d-flex">
+                        <input class="form-control w-50 inputEmail" type="text" name="email" th:value="${userDTO.getEmail()}">
+                        <button class="btn btn-primary ms-2" id="btnCheckEmail">이메일 인증</button>
+                        <div id="resultEmail" class="d-block"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>휴대폰</td>
+                    <td>
+                        <input class="form-control w-50 inputHp" type="text" name="hp" placeholder="휴대폰 입력" th:value="${userDTO.getHp()}"/>
+                        <div id="resultHp" class="d-block"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>주소</td>
+                    <td>
+                        <input class="form-control w-25 mb-2 inputZip" type="text" name="zip" readonly placeholder="우편번호 검색" th:value="${userDTO.getZip()}"/>
+                        <input class="form-control w-75 mb-2 inputAddr1" type="text" name="add1" readonly placeholder="기본주소 입력" th:value="${userDTO.getAddr1()}" />
+                        <input class="form-control w-75 mb-2 inputAddr2" type="text" name="addr2" placeholder="상세주소 입력" th:value="${userDTO.getAddr2()}"/>
+                    </td>
+
+
+                </tr>
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+    <div class="text-end mb-4">
+        <a th:href="@{#}" class="btn btn-danger">회원탈퇴</a>
+        <a th:href="@{#}" class="btn btn-warning">수정완료</a>
+    </div>
+    <!-- 내용 끝 -->
+</div>
+</html>

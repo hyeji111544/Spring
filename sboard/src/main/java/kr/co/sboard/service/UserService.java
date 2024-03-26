@@ -4,6 +4,7 @@ import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
+import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.TermsDTO;
 import kr.co.sboard.dto.UserDTO;
 import kr.co.sboard.entity.User;
@@ -17,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -70,17 +73,79 @@ public class UserService {
 
     }
 
-    public ResponseEntity<?> findIdAndEmail(String uid, String email){
-        log.info("uid :" + uid);
+    public UserDTO findByNameAndEmail(String name, String email){
+        log.info("name :" + name);
         log.info("email :" + email);
-        Optional<User> optUser = userRepository.findUserByUidAndEmail(uid, email);
+        Optional<User> optUser = userRepository.findUserByNameAndEmail(name, email);
+        UserDTO userDTO = null;
 
         log.info("findUser..." + optUser);
 
         if (optUser.isPresent()){
+            User user = optUser.get();
+            userDTO = modelMapper.map(user, UserDTO.class);
+
+            return userDTO;
+        }else {
+            return null; // 또는 예외를 던지거나 다른 방식으로 처리
+        }
+    }
+
+    public UserDTO findPassword(String uid, String email){
+        Optional<User> optUser = userRepository.findUserByUidAndEmail(uid, email);
+        UserDTO userDTO = null;
+
+        log.info("findpass..." + optUser);
+
+        if (optUser.isPresent()){
+            User user = optUser.get();
+            userDTO = modelMapper.map(user, UserDTO.class);
+
+
+            return userDTO;
+        }else {
+            return null; // 또는 예외를 던지거나 다른 방식으로 처리
+        }
+    }
+
+    public UserDTO findUserByUid(String uid){
+        Optional<User> optUser = userRepository.findById(uid);
+        log.info("findUserByUid..... :");
+        UserDTO userDTO = null;
+
+        log.info("findUserByUid.....1 :" + optUser);
+
+        if (optUser.isPresent()){
+            User user = optUser.get();
+            userDTO = modelMapper.map(user, UserDTO.class);
+            log.info("findUserByUid......2 :" + userDTO.toString());
+
+
+            return userDTO;
+        }else {
+            return null; // 또는 예외를 던지거나 다른 방식으로 처리
+        }
+    }
+
+
+    public ResponseEntity<?> updateUserPass(UserDTO userDTO){
+        Optional<User> optUser = userRepository.findById(userDTO.getUid());
+
+        if (optUser.isPresent()){
+            User user = optUser.get();
+
+            String encoded = passwordEncoder.encode(userDTO.getPass());
+            log.info(encoded);
+            user.setPass(encoded);
+
+
+            log.info("updateUser....."+ user);
+
+            User updateUser = userRepository.save(user);
+
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(optUser);
+                    .body(updateUser);
         }else {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

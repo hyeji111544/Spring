@@ -30,7 +30,7 @@ public class ArticleController {
          - modelAttribute("cate", cate)와 동일
     */
     @GetMapping("/article/list")
-    public String list(Model model, PageRequestDTO pageRequestDTO, @ModelAttribute("cate") String cate) {
+    public String list(Model model,  @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO) {
         PageResponseDTO pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
 
         log.info("pageResponseDTO : " + pageResponseDTO);
@@ -41,13 +41,13 @@ public class ArticleController {
     }
 
     @GetMapping("/article/write")
-    public String write(@ModelAttribute("cate") String cate){
+    public String write(Model model, @ModelAttribute("cate") String cate){
         log.info("write ...:" + cate);
         return "/article/write";
     }
 
     @PostMapping("/article/write")
-    public String write(HttpServletRequest req, ArticleDTO articleDTO ,Model model){
+    public String write(Model model, HttpServletRequest req, ArticleDTO articleDTO ){
         /*
             글작성을 테스트할 때는 로그인해야하기 때문에
             SecurityConfig 인가 설정 수정할 것
@@ -66,7 +66,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/view")
-    public String view(int no , int pg, Model model){
+    public String view(Model model, int no , int pg){
         ArticleDTO articleDTO = articleService.findById(no);
         model.addAttribute(articleDTO);
         model.addAttribute("pg", pg);
@@ -77,7 +77,7 @@ public class ArticleController {
     // fileDownload 메서드 FileController 로 이동
 
     @GetMapping("/article/modify")
-    public String modify(int no , int pg, Model model){
+    public String modify(Model model, int no , int pg){
         ArticleDTO articleDTO = articleService.findById(no);
         model.addAttribute(articleDTO);
         model.addAttribute("pg", pg);
