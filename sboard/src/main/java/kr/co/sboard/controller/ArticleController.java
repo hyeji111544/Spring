@@ -31,7 +31,16 @@ public class ArticleController {
     */
     @GetMapping("/article/list")
     public String list(Model model,  @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO) {
-        PageResponseDTO pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
+
+        PageResponseDTO pageResponseDTO = null;
+
+        if(pageRequestDTO.getKeyword() == null) {
+            // 일반 글 목록 조회
+            pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
+        }else {
+            // 검색 글 목록 조회
+            pageResponseDTO = articleService.searchArticles(pageRequestDTO);
+        }
 
         log.info("pageResponseDTO : " + pageResponseDTO);
 

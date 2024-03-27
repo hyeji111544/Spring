@@ -212,6 +212,14 @@ public class UserController {
         return "/my/setting";
     }
 
+    @ResponseBody
+    @GetMapping("/my/setting/{type}/{value}/{uid}")
+    public ResponseEntity<?> updateUser(@PathVariable("type") String type,
+                                        @PathVariable("value") String value,
+                                        @PathVariable("uid") String uid) {
+        return userService.updateUser(type, value, uid);
+    }
+
 
 
 }

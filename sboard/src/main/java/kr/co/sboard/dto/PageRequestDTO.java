@@ -25,6 +25,10 @@ public class PageRequestDTO {
 
     private String cate;
 
+    /* 검색을 위한 type, keyword 선언 */
+    private String type;
+    private String keyword;
+
     public PageRequest getPageable(String sort){
 
         return PageRequest.of(this.pg -1, this.size, Sort.by(sort).descending());

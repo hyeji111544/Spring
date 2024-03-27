@@ -13,8 +13,7 @@ public interface UserMapper {
     public void insertUser(UserDTO userDTO);
     public int selectCountUser(@Param("type") String type, @Param("value") String value);
     public void selectUsers();
-    public void updateUser();
     public void deleteUser();
 
-
+    public void updateUserBy(@Param("type") String type, @Param("value") String value, @Param("uid") String uid);
 }

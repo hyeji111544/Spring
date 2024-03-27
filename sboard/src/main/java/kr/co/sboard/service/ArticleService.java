@@ -55,6 +55,26 @@ public class ArticleService {
                 .build();
     }
 
+    public PageResponseDTO searchArticles(PageRequestDTO pageRequestDTO){
+
+        Pageable pageable = pageRequestDTO.getPageable("no");
+
+        Page<Article> pageArticle = articleRepository.searchArticles(pageRequestDTO,  pageable);
+
+
+        List<ArticleDTO> dtoList = pageArticle.getContent().stream()
+                .map(entity -> modelMapper.map(entity, ArticleDTO.class))
+                .toList();
+
+        int total = (int) pageArticle.getTotalElements();
+
+        return PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total(total)
+                .build();
+    }
+
     public ArticleDTO findById(int no){
         Optional<Article> optArticle = articleRepository.findById(no);
         log.info("findById ...1 " + optArticle);

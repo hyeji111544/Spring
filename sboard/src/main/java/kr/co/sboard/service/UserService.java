@@ -56,6 +56,23 @@ public class UserService {
         return userMapper.selectCountUser(type, value);
     }
 
+    public ResponseEntity<?> updateUser(String type, String value, String uid){
+        userMapper.updateUserBy(type, value, uid);
+
+        // 업데이트된 사용자 정보 조회
+        Optional<User> updatedUserOptional = userRepository.findById(uid);
+
+        // 업데이트된 사용자 정보가 존재하는지 확인
+        if (updatedUserOptional.isPresent()) {
+            // 업데이트된 사용자 정보를 ResponseEntity에 담아 반환
+            User updatedUser = updatedUserOptional.get();
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            // 업데이트된 사용자 정보가 존재하지 않을 경우 404 에러 반환
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     public UserDTO selectUser(String uid){
         Optional<User> optUser = userRepository.findById(uid);
         log.info("findById ...1 "+ optUser);
@@ -152,6 +169,7 @@ public class UserService {
                     .body("not found");
         }
     }
+
 
     /*
         - build.gradle 파일에 spring-boot-starter-mail 의존성 추가 할것

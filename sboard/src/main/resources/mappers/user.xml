@@ -42,6 +42,25 @@
         </where>
     </select>
 
+    <update id="updateUserBy" >
+        update `user`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type == 'name'">
+                name=#{value},
+            </if>
+            <if test="type == 'nick'">
+                nick=#{value},
+            </if>
+            <if test="type == 'hp'">
+                hp=#{value},
+            </if>
+            <if test="type == 'email'">
+                email=#{value},
+            </if>
+        </trim>
+        where uid = #{uid}
+    </update>
+
 
 
 </mapper>

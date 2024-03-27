@@ -3,7 +3,7 @@
       layout:decorate="~{/layout/defaultLayout}">
 <!--
     날짜 : 2024/03/25
-    이름 : 김철학
+    이름 : 윤혜지
     내용 : 나의 설정 구현하기
 
     - http://localhost:8080/sboard/my/setting
@@ -12,6 +12,161 @@
 -->
 
 <div class="container-fluid px-4" layout:fragment="content">
+
+    <script>
+        window.onload = function (){
+            const setName = document.getElementById('settingName');
+            const setNick = document.getElementById('settingNick');
+            const setRegDate = document.getElementById('settingRegDate');
+            const setEmail = document.getElementById('settingEmail');
+            const setHp = document.getElementById('settingHp');
+            const setZip = document.getElementById('settingZip');
+            const saveButton = document.getElementById('saveButton');
+            const resultComment = document.getElementById('resultComment');
+            const urlParams = new URLSearchParams(window.location.search);
+            const uid = urlParams.get('uid');
+            console.log(uid);
+
+            setName.onclick = function (){
+                editModal('이름');
+
+                setName.onclick = function (){
+                    editModal('이름');
+
+                    saveButton.onclick = async function () {
+                        const value = document.getElementById('editInput').value;
+                        const type = 'name';
+                        console.log(value);
+
+                        const reName  = /^[가-힣]{2,10}$/;
+
+                        if (reName.test(value)) {
+                            // 이름이 유효한 경우 중복 체크를 실행합니다.
+
+                            const jsonData = {
+                                "uid"   : uid,
+                                "value" : value
+                            };
+                            console.log("jsonData...! " + JSON.stringify(jsonData));
+
+                            // 중복 확인을 위해 서버에 요청을 보냅니다.
+                            const response = await fetch(`/sboard/user/${type}/${value}`);
+                            const data = await response.json();
+
+                            if (data.result > 0) {
+                                // 중복이 있는 경우 사용자에게 알립니다.
+                                spinner.classList.add('d-none');
+                                showResultInvalid(resultComment, '이미 사용중인 아이디입니다.');
+                            } else {
+                                // 중복이 없는 경우 서버로 데이터를 업데이트하는 요청을 보냅니다.
+                                const updateResponse = await fetch(`/sboard/my/setting/${type}/${value}/${uid}`);
+                                const updateData = await updateResponse.json();
+                                console.log(updateData);
+                                document.getElementById('userName').innerText = value; // 업데이트된 이름을 화면에 표시합니다.
+                                spinner.classList.add('d-none');
+                                sshowResultInvalid(resultComment, '사용가능한 아이디입니다.');
+                            }
+
+                        } else {
+                            // 입력값이 유효하지 않은 경우 사용자에게 알립니다.
+                            showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
+                            document.getElementById('editInput').addEventListener('click', function() {
+                                // 결과 메시지가 표시되어 있다면 숨깁니다.
+                                hideResultInvalid();
+                            });
+                        }
+                    }
+                }
+
+            setNick.onclick = function (){
+                editModal('닉네임');
+
+                saveButton.onclick = function () {
+
+                    const value = document.getElementById('editInput').value;
+                    const type = 'nick';
+                    console.log(value);
+
+                    const reNick  = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]*$/;
+
+                    if (reNick.test(value)) {
+                        const jsonData = {
+                            "uid"   : uid,
+                            "value" : value
+                        };
+                        console.log("jsonData...! " + JSON.stringify(jsonData));
+
+                        // const data = fetchPut(`/my/setting/${type}/${value}/${uid}`, jsonData);
+                        const data = fetchGet(`/sboard/my/setting/${type}/${value}/${uid}`);
+                        console.log(data);
+                        document.getElementById('userNick').innerText = value;
+
+                    } else {
+                        // 입력값이 정규식에 맞지 않을 경우 사용자에게 알립니다.
+                        showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
+                        document.getElementById('editInput').addEventListener('click', function() {
+                            // 결과 메시지가 표시되어 있다면 숨깁니다.
+                            hideResultInvalid();
+                        });
+                    }
+                }
+            }
+            setRegDate.onclick = function (){
+                alertModal('가입일은 수정할 수 없습니다.');
+            }
+
+            setEmail.onclick = function (){
+                document.getElementById('btnSendEmailCode').classList.remove('d-none');
+                editMailModal('메일');
+
+
+
+
+            }
+
+            setHp.onclick = function (){
+                editModal('번호');
+
+                saveButton.onclick = function () {
+
+                    const value = document.getElementById('editInput').value;
+                    const type = 'hp';
+                    console.log(value);
+
+                    const reHp    = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
+
+                    if (reHp.test(value)) {
+                        const jsonData = {
+                            "uid"   : uid,
+                            "value" : value
+                        };
+                        console.log("jsonData...! " + JSON.stringify(jsonData));
+
+                        // const data = fetchPut(`/my/setting/${type}/${value}/${uid}`, jsonData);
+                        const data = fetchGet(`/sboard/my/setting/${type}/${value}/${uid}`);
+                        console.log(data);
+                        document.getElementById('userNick').innerText = value;
+
+                    } else {
+                        // 입력값이 정규식에 맞지 않을 경우 사용자에게 알립니다.
+                        showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
+                        document.getElementById('editInput').addEventListener('click', function() {
+                            // 결과 메시지가 표시되어 있다면 숨깁니다.
+                            hideResultInvalid();
+                        });
+                    }
+                }
+            }
+
+            setZip.onclick = function (){
+                editModal('주소');
+
+            }
+
+
+        }
+
+    </script>
 
     <h3 class="mt-4 mb-4">나의 설정</h3>
 
@@ -22,27 +177,43 @@
             기본정보
         </div>
         <div class="card-body">
-            <table class="table">
+            <table class="table table-hover">
                 <tr>
                     <td class="col-md-2">아이디</td>
-                    <td class="col-md-10"><input class="form-control w-50" type="text" name="uid" readonly th:value="${userDTO.getUid()}"></td>
+                    <td class="col-md-10" id="userId">[[${userDTO.getUid()}]]</td>
                 </tr>
-                <tr>
-                    <td>비밀번호</td>
-                    <td><input class="form-control w-50 inputPass" type="text" name="pass1">
-                    <div id="resultPass" class="d-block"></div></td>
+                <tr id="settingName">
+                    <td class="col-md-2">이름</td>
+                    <td class="col-md-10" id="userName">[[${userDTO.getName()}]]</td>
                 </tr>
-                <tr>
-                    <td>비밀번호 확인</td>
-                    <td class="d-flex">
-                        <input class="form-control w-50 inputPass" type="text" name="pass2">
-                        <button class="btn btn-primary ms-2" id="changePasswordBtn">비밀번호 변경</button>
-                    </td>
+                <tr id="settingNick">
+                    <td class="col-md-2">별명</td>
+                    <td class="col-md-10" id="userNick">[[${userDTO.getNick()}]]</td>
                 </tr>
-                <tr>
-                    <td>회원가입일</td>
-                    <td><input class="form-control border-0" type="text" name="regDate" readonly th:value="${#temporals.format(userDTO.getRegDate(), 'yyyy-MM-dd HH:mm:ss')}">
-                    </td>
+                <tr id="settingRegDate">
+                    <td class="col-md-2">회원가입일</td>
+                    <td class="col-md-10" id="regDate">[[${#temporals.format(userDTO.getRegDate(), 'yyyy-MM-dd HH:mm:ss')}]]</td>
+                </tr>
+            </table>
+            <div class="text-end">
+                <a th:href="@{#}" class="btn btn-outline-secondary" id="passwordChangeBtn" onclick="openEditModal('password')">비밀번호 변경</a>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            연락처 정보
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr id="settingEmail">
+                    <td class="col-md-2">이메일</td>
+                    <td class="col-md-10" id="userEmail">[[${userDTO.getEmail()}]]</td>
+                </tr>
+                <tr id="settingHp">
+                    <td>휴대폰</td>
+                    <td class="col-md-10" id="userHp">[[${userDTO.getHp()}]]</td>
                 </tr>
             </table>
         </div>
@@ -50,50 +221,16 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            개인정보 수정
+            주소
         </div>
         <div class="card-body">
-            <table class="table">
-                <tr>
-                    <td class="col-md-2">이름</td>
-                    <td class="col-md-10"><input class="form-control w-50 inputName" type="text" name="name" th:value="${userDTO.getName()}">
-                        <div id="resultName" class="d-block"></div></td>
-                </tr>
-                <tr>
-                    <td>별명</td>
-                    <td class="d-flex">
-                        <input class="form-control w-50 inputNick" type="text" name="nick" th:value="${userDTO.getNick()}">
-                        <button class="btn btn-primary ms-2" id="btnCheckNick">중복확인</button>
-                        <div id="resultNick" class="d-block"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>이메일</td>
-                    <td class="d-flex">
-                        <input class="form-control w-50 inputEmail" type="text" name="email" th:value="${userDTO.getEmail()}">
-                        <button class="btn btn-primary ms-2" id="btnCheckEmail">이메일 인증</button>
-                        <div id="resultEmail" class="d-block"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>휴대폰</td>
-                    <td>
-                        <input class="form-control w-50 inputHp" type="text" name="hp" placeholder="휴대폰 입력" th:value="${userDTO.getHp()}"/>
-                        <div id="resultHp" class="d-block"></div>
-                    </td>
-                </tr>
+            <table class="table table-hover">
                 <tr>
                     <td>주소</td>
-                    <td>
-                        <input class="form-control w-25 mb-2 inputZip" type="text" name="zip" readonly placeholder="우편번호 검색" th:value="${userDTO.getZip()}"/>
-                        <input class="form-control w-75 mb-2 inputAddr1" type="text" name="add1" readonly placeholder="기본주소 입력" th:value="${userDTO.getAddr1()}" />
-                        <input class="form-control w-75 mb-2 inputAddr2" type="text" name="addr2" placeholder="상세주소 입력" th:value="${userDTO.getAddr2()}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td class="text-end">
-                        <a th:href="@{#}" class="btn btn-outline-secondary">회원탈퇴</a>
+                    <td id="settingZip">
+                        <div id="userZip">[[${userDTO.getZip()}]]</div>
+                        <div id="userAddr1">[[${userDTO.getAddr1()}]]</div>
+                        <div id="userAddr2">[[${userDTO.getAddr2()}]]</div>
                     </td>
                 </tr>
 
@@ -101,9 +238,14 @@
 
         </div>
 
-
+    </div>
+    <div class="d-flex justify-content-end mb-4">
+        <a th:href="@{#}" class="btn btn-outline-secondary">회원탈퇴</a>
     </div>
 
     <!-- 내용 끝 -->
+
+
+
 </div>
 </html>
