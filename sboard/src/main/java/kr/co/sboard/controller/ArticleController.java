@@ -30,13 +30,13 @@ public class ArticleController {
          - modelAttribute("cate", cate)와 동일
     */
     @GetMapping("/article/list")
-    public String list(Model model,  @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO) {
+    public String list(Model model, String cate, PageRequestDTO pageRequestDTO) {
 
         PageResponseDTO pageResponseDTO = null;
 
         if(pageRequestDTO.getKeyword() == null) {
             // 일반 글 목록 조회
-            pageResponseDTO = articleService.findByParentAndCate(pageRequestDTO);
+            pageResponseDTO = articleService.selectArticles(pageRequestDTO);
         }else {
             // 검색 글 목록 조회
             pageResponseDTO = articleService.searchArticles(pageRequestDTO);
@@ -50,7 +50,14 @@ public class ArticleController {
     }
 
     @GetMapping("/article/write")
-    public String write(Model model, @ModelAttribute("cate") String cate){
+    public String write(Model model, @ModelAttribute("cate") String cate, PageRequestDTO pageRequestDTO){
+
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+        model.addAttribute(pageResponseDTO);
+
         log.info("write ...:" + cate);
         return "/article/write";
     }

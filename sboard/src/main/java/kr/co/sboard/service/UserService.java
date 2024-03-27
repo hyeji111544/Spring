@@ -53,6 +53,8 @@ public class UserService {
     }
 
     public int selectCountUser(String type, String value) {
+        log.info("count.... : " + type);
+        log.info("count.... : " + value);
         return userMapper.selectCountUser(type, value);
     }
 

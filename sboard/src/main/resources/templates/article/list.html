@@ -4,6 +4,7 @@
 
 <div class="container-fluid px-4" layout:fragment="content">
 
+
     <h3 class="mt-4 mb-4">게시판 목록</h3>
 
 
@@ -53,9 +54,10 @@
                 <tr th:each="articles, index:${pageResponseDTO.dtoList}">
                     <td>[[${pageResponseDTO.startNo - index.index}]]</td>
                     <td>
-                        <a th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg})}" class="text-dark ">[[${articles.title}]]</a>
+                        <a th:unless="${pageResponseDTO.type == null and pageResponseDTO.keyword == null}" th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}" class="text-dark">[[${articles.title}]]</a>
+                        <a th:unless="${pageResponseDTO.type != null and pageResponseDTO.keyword != null}" th:href="@{/article/view(no=${articles.no}, cate=${articles.cate}, pg=${pageResponseDTO.pg})}" class="text-dark">[[${articles.title}]]</a>
                     </td>
-                    <td>[[${articles.writer}]]</td>
+                    <td>[[${articles.nick}]]</td>
                     <td>[[${articles.hit}]]</td>
                     <td th:text="${#strings.substring(articles.rdate, 0, 10)}"></td>
                 </tr>
@@ -68,15 +70,18 @@
                 <ul class="pagination justify-content-center">
 
                     <li th:if="${pageResponseDTO.prev}" class="page-item">
-                        <a class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}"> &laquo; </a>
+                        <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1})}">&raquo;</a>
+                        <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
                     </li>
-                    <li th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}"
-                        th:class="${num == pageResponseDTO.pg ? 'page-item active' : 'page-item'}">
-                        <a class="page-link text-dark" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${num})}">[[${num}]]</a>
+                    <li th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}" class="page-item">
+                        <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${num})}">[[${num}]]</a>
+                        <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${num}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">[[${num}]]</a>
                     </li>
                     <li th:if="${pageResponseDTO.next}" class="page-item">
-                        <a class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end+1})}"> &raquo; </a>
+                        <a th:if="${pageResponseDTO.keyword == null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1})}">&raquo;</a>
+                        <a th:if="${pageResponseDTO.keyword != null}" class="page-link" th:href="@{/article/list(cate=${pageResponseDTO.cate}, pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type}, keyword=${pageResponseDTO.keyword})}">&#62;</a>
                     </li>
+
                 </ul>
             </nav>
         </div>

@@ -13,6 +13,9 @@ public class PageResponseDTO {
 
     private List<ArticleDTO> dtoList;
     private String cate;
+    private String type;
+    private String keyword;
+
     private int pg;
     private int size;
     private int total;
@@ -24,6 +27,8 @@ public class PageResponseDTO {
     public PageResponseDTO(PageRequestDTO pageRequestDTO, List<ArticleDTO> dtoList, int total){
         // 생성자
         this.cate    = pageRequestDTO.getCate();
+        this.type    = pageRequestDTO.getType();
+        this.keyword    = pageRequestDTO.getKeyword();
         this.pg      = pageRequestDTO.getPg();
         this.size    = pageRequestDTO.getSize();
         this.total   = total;

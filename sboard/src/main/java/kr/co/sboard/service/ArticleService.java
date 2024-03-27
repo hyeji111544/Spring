@@ -1,5 +1,6 @@
 package kr.co.sboard.service;
 
+import com.querydsl.core.Tuple;
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.FileDTO;
 import kr.co.sboard.dto.PageRequestDTO;
@@ -35,16 +36,32 @@ public class ArticleService {
     // RootConfig Bean 생성/등록
     private final ModelMapper modelMapper;
 
-    public PageResponseDTO findByParentAndCate(PageRequestDTO pageRequestDTO){
+    public PageResponseDTO selectArticles(PageRequestDTO pageRequestDTO){
+        // jpa 쿼리 메서드 사용 했으나 Dsl메서드로 변경findByParentAndCate->selectArticles
 
         Pageable pageable = pageRequestDTO.getPageable("no");
+        log.info("selectArticles....1");
 
-        Page<Article> pageArticle = articleRepository.findByParentAndCate(0, pageRequestDTO.getCate(), pageable);
 
+        Page<Tuple> pageArticle = articleRepository.selectArticles(pageRequestDTO, pageable);
+        log.info("selectArticles....2" + pageArticle);
 
+        //닉네임 조인으로 인해 수정
         List<ArticleDTO> dtoList = pageArticle.getContent().stream()
-                .map(entity -> modelMapper.map(entity, ArticleDTO.class))
+                .map(tuple ->
+                        {
+                            log.info("tuple : " + tuple);
+                            Article article = tuple.get(0, Article.class);
+                            String nick = tuple.get(1, String.class);
+                            article.setNick(nick);
+
+                            log.info("article : " + article);
+
+                            return modelMapper.map(article, ArticleDTO.class);
+                        }
+                )
                 .toList();
+        log.info("selectArticles....3");
 
         int total = (int) pageArticle.getTotalElements();
 

@@ -116,12 +116,24 @@ function editModal(message){
     resultModal.show();
 }
 
+function closeEditModal(){
+    var modalElement = document.getElementById('editModal'); // 모달 요소 가져오기
+    var modal = bootstrap.Modal.getInstance(modalElement); // 모달 객체 가져오기
+    modal.hide();
+}
+
 function editMailModal(message){
     const modal = document.getElementById('editMailModal');
     modal.getElementsByClassName('modal-title')[0].innerText = message + '수정';
     modal.getElementsByClassName('modal-body-comment')[0].innerText = message ;
     const resultModal = new bootstrap.Modal(modal);
     resultModal.show();
+}
+
+function closeEditMailModal(){
+    var modalElement = document.getElementById('editMailModal'); // 모달 요소 가져오기
+    var modal = bootstrap.Modal.getInstance(modalElement); // 모달 객체 가져오기
+    modal.hide();
 }
 
 

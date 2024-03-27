@@ -14,7 +14,14 @@
 <div class="container-fluid px-4" layout:fragment="content">
 
     <script>
+
+        const rePass  = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{5,16}$/;
+        const reName  = /^[가-힣]{2,10}$/
+        const reNick  = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]*$/;
+        const reEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        const reHp    = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
         window.onload = function (){
+
             const setName = document.getElementById('settingName');
             const setNick = document.getElementById('settingNick');
             const setRegDate = document.getElementById('settingRegDate');
@@ -27,69 +34,20 @@
             const uid = urlParams.get('uid');
             console.log(uid);
 
+
+
+
             setName.onclick = function (){
                 editModal('이름');
-
-                setName.onclick = function (){
-                    editModal('이름');
-
-                    saveButton.onclick = async function () {
-                        const value = document.getElementById('editInput').value;
-                        const type = 'name';
-                        console.log(value);
-
-                        const reName  = /^[가-힣]{2,10}$/;
-
-                        if (reName.test(value)) {
-                            // 이름이 유효한 경우 중복 체크를 실행합니다.
-
-                            const jsonData = {
-                                "uid"   : uid,
-                                "value" : value
-                            };
-                            console.log("jsonData...! " + JSON.stringify(jsonData));
-
-                            // 중복 확인을 위해 서버에 요청을 보냅니다.
-                            const response = await fetch(`/sboard/user/${type}/${value}`);
-                            const data = await response.json();
-
-                            if (data.result > 0) {
-                                // 중복이 있는 경우 사용자에게 알립니다.
-                                spinner.classList.add('d-none');
-                                showResultInvalid(resultComment, '이미 사용중인 아이디입니다.');
-                            } else {
-                                // 중복이 없는 경우 서버로 데이터를 업데이트하는 요청을 보냅니다.
-                                const updateResponse = await fetch(`/sboard/my/setting/${type}/${value}/${uid}`);
-                                const updateData = await updateResponse.json();
-                                console.log(updateData);
-                                document.getElementById('userName').innerText = value; // 업데이트된 이름을 화면에 표시합니다.
-                                spinner.classList.add('d-none');
-                                sshowResultInvalid(resultComment, '사용가능한 아이디입니다.');
-                            }
-
-                        } else {
-                            // 입력값이 유효하지 않은 경우 사용자에게 알립니다.
-                            showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
-                            document.getElementById('editInput').addEventListener('click', function() {
-                                // 결과 메시지가 표시되어 있다면 숨깁니다.
-                                hideResultInvalid();
-                            });
-                        }
-                    }
-                }
-
-            setNick.onclick = function (){
-                editModal('닉네임');
+                document.getElementById('editInput').value = '';
+                hideResultInvalid();
 
                 saveButton.onclick = function () {
-
                     const value = document.getElementById('editInput').value;
-                    const type = 'nick';
+                    const type = 'name';
                     console.log(value);
 
-                    const reNick  = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]*$/;
-
-                    if (reNick.test(value)) {
+                    if (reName.test(value)) {
                         const jsonData = {
                             "uid"   : uid,
                             "value" : value
@@ -99,7 +57,9 @@
                         // const data = fetchPut(`/my/setting/${type}/${value}/${uid}`, jsonData);
                         const data = fetchGet(`/sboard/my/setting/${type}/${value}/${uid}`);
                         console.log(data);
-                        document.getElementById('userNick').innerText = value;
+                        document.getElementById('userName').innerText = value;
+
+                        closeEditModal();
 
                     } else {
                         // 입력값이 정규식에 맞지 않을 경우 사용자에게 알립니다.
@@ -111,13 +71,108 @@
                     }
                 }
             }
-            setRegDate.onclick = function (){
-                alertModal('가입일은 수정할 수 없습니다.');
+
+            setNick.onclick = function (){
+                editModal('별명');
+                document.getElementById('editInput').value = '';
+                hideResultInvalid();
+
+                saveButton.onclick = async function () {
+                    const value = document.getElementById('editInput').value;
+                    const type = 'nick';
+                    console.log(value);
+
+                    if (reNick.test(value)) {
+                        // 이름이 유효한 경우 중복 체크를 실행합니다.
+
+                        const jsonData = {
+                            "uid"   : uid,
+                            "value" : value
+                        };
+                        console.log("jsonData...! " + JSON.stringify(jsonData));
+
+                        // 중복 확인을 위해 서버에 요청을 보냅니다.
+                        const data = await fetchGet(`/sboard/user/${type}/${value}`);
+
+                        if (data.result > 0) {
+                            // 중복이 있는 경우 사용자에게 알립니다.
+                            showResultInvalid(resultComment, '이미 사용중인 닉네임입니다.');
+                        } else {
+                            // 중복이 없는 경우 서버로 데이터를 업데이트하는 요청을 보냅니다.
+                            const updateResponse = await fetch(`/sboard/my/setting/${type}/${value}/${uid}`);
+                            const updateData = await updateResponse.json();
+                            console.log(updateData);
+                            document.getElementById('userNick').innerText = value; // 업데이트된 이름을 화면에 표시합니다.
+
+
+
+                            closeEditModal();
+                        }
+
+                    } else {
+                        // 입력값이 유효하지 않은 경우 사용자에게 알립니다.
+                        showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
+                        document.getElementById('editInput').addEventListener('click', function() {
+                            // 결과 메시지가 표시되어 있다면 숨깁니다.
+                            hideResultInvalid();
+                        });
+                    }
+                }
             }
+            //setRegDate.onclick = function (){alertModal('가입일은 수정할 수 없습니다.');}
+
+            //이메일 변경
+            const editMailInput = document.getElementsByClassName('editMailInput');
+            const editMailCodeInput = document.getElementById('editMailCodeInput');
+            const btnSendEmailCode = document.getElementById('btnSendEmailCode');
+            const btnCheckCode = document.getElementById('btnCheckCode');
 
             setEmail.onclick = function (){
-                document.getElementById('btnSendEmailCode').classList.remove('d-none');
                 editMailModal('메일');
+                document.getElementById('editInput').value = '';
+                hideResultInvalid();
+
+                saveButton.onclick = async function () {
+                    const value = document.getElementById('editInput').value;
+                    const type = 'email';
+                    console.log(value);
+
+                    if (reEmail.test(value)) {
+
+                        const jsonData = {
+                            "uid"   : uid,
+                            "value" : value
+                        };
+                        console.log("jsonData...! " + JSON.stringify(jsonData));
+
+                        // 중복 확인을 위해 서버에 요청을 보냅니다.
+                        const data = await fetchGet(`/sboard/user/${type}/${value}`);
+
+                        if (data.result > 0) {
+                            // 중복이 있는 경우 사용자에게 알립니다.
+                            showResultInvalid(resultComment, '이미 사용중인 메일입니다.');
+                        } else {
+                            // 중복이 없는 경우 서버로 데이터를 업데이트하는 요청을 보냅니다.
+                            /*
+                            const updateResponse = await fetch(`/sboard/my/setting/${type}/${value}/${uid}`);
+                            const updateData = await updateResponse.json();
+                            console.log(updateData);
+                            document.getElementById('userNick').innerText = value; // 업데이트된 이름을 화면에 표시합니다.
+                             closeEditModal();
+                            */
+
+
+                        }
+
+                    } else {
+                        // 입력값이 유효하지 않은 경우 사용자에게 알립니다.
+                        showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
+                        document.getElementById('editInput').addEventListener('click', function() {
+                            // 결과 메시지가 표시되어 있다면 숨깁니다.
+                            hideResultInvalid();
+                        });
+                    }
+                }
 
 
 
@@ -126,29 +181,43 @@
 
             setHp.onclick = function (){
                 editModal('번호');
+                document.getElementById('editInput').value = '';
+                hideResultInvalid();
 
-                saveButton.onclick = function () {
-
+                saveButton.onclick = async function () {
                     const value = document.getElementById('editInput').value;
                     const type = 'hp';
                     console.log(value);
-
                     const reHp    = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
 
+
                     if (reHp.test(value)) {
+                        // 이름이 유효한 경우 중복 체크를 실행합니다.
+
                         const jsonData = {
                             "uid"   : uid,
                             "value" : value
                         };
                         console.log("jsonData...! " + JSON.stringify(jsonData));
 
-                        // const data = fetchPut(`/my/setting/${type}/${value}/${uid}`, jsonData);
-                        const data = fetchGet(`/sboard/my/setting/${type}/${value}/${uid}`);
-                        console.log(data);
-                        document.getElementById('userNick').innerText = value;
+                        // 중복 확인을 위해 서버에 요청을 보냅니다.
+                        const data = await fetchGet(`/sboard/user/${type}/${value}`);
+
+                        if (data.result > 0) {
+                            // 중복이 있는 경우 사용자에게 알립니다.
+                            showResultInvalid(resultComment, '이미 사용중인 번호입니다.');
+                        } else {
+                            // 중복이 없는 경우 서버로 데이터를 업데이트하는 요청을 보냅니다.
+                            const updateResponse = await fetch(`/sboard/my/setting/${type}/${value}/${uid}`);
+                            const updateData = await updateResponse.json();
+                            console.log(updateData);
+                            document.getElementById('userHp').innerText = value;
+
+                            closeEditModal();
+                        }
 
                     } else {
-                        // 입력값이 정규식에 맞지 않을 경우 사용자에게 알립니다.
+                        // 입력값이 유효하지 않은 경우 사용자에게 알립니다.
                         showResultInvalid(resultComment, '바른 형식으로 입력해주세요');
                         document.getElementById('editInput').addEventListener('click', function() {
                             // 결과 메시지가 표시되어 있다면 숨깁니다.

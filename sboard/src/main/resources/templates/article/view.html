@@ -290,10 +290,12 @@
                 </div>
             </th:block>
 
-                <div class="text-end">
-                    <a th:href="@{/article/list(cate=${articleDTO.cate}, pg=${pg})}" class="btn btn-outline-secondary" id="btnSubmit">목록</a>
-                    <!-- <button class="btn btn-outline-primary" id="btnSubmit">글수정</button> -->
-                </div>
+            <div class="text-end">
+                <a th:unless="${param.type == null and param.keyword == null}"
+                   th:href="@{/article/list(cate=${articleDTO.cate}, pg=${pg}, type=${param.type}, keyword=${param.keyword})}"
+                   class="btn btn-outline-secondary" id="btnSubmitSearch">목록</a>
+                <a th:unless="${param.type != null and param.keyword != null}" th:href="@{/article/list(cate=${articleDTO.cate}, pg=${pg})}" class="btn btn-outline-secondary" id="btnSubmit">목록</a>
+            </div>
 
                 <!-- 댓글 목록 시작-->
                 <div id="commentList">
