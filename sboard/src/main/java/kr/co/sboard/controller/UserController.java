@@ -225,6 +225,13 @@ public class UserController {
         return userService.updateUser(type, value, uid);
     }
 
+    @DeleteMapping("/user/{uid}")
+    public void deleteUser(@PathVariable("uid") String uid){
+
+        userService.deleteUser(uid);
+
+    }
+
 
 
 }

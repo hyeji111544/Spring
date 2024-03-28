@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.TermsDTO;
 import kr.co.sboard.dto.UserDTO;
+import kr.co.sboard.entity.Article;
 import kr.co.sboard.entity.User;
 import kr.co.sboard.mapper.UserMapper;
 import kr.co.sboard.repository.UserRepository;
@@ -192,6 +193,24 @@ public class UserService {
         }
     }
 
+    public void deleteUser(String uid){
+        //삭제 전 조회
+        Optional<User> optUser = userRepository.findById(uid);
+
+        log.info("optUser.... : " + optUser);
+
+        if(optUser.isPresent()){
+            log.info("deleteUser.....1");
+
+        // 유저 id 와 leaveDate 만 남기고 나머지 null 처리
+            userMapper.deleteUser(uid);
+
+        }else {
+            log.info("deleteUser.....2");
+
+        }
+    }
+
 
     /*
         - build.gradle 파일에 spring-boot-starter-mail 의존성 추가 할것
@@ -224,5 +243,6 @@ public class UserService {
             log.error("sendEmailConde : " + e.getMessage());
         }
     }
+
 
 }

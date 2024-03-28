@@ -21,6 +21,24 @@
                             regDate=NOW()
     </insert>
 
+    <update id="deleteUser">
+        UPDATE `user` SET
+                pass = NULL,
+                name = NULL,
+                nick = NULL,
+                email = NULL,
+                hp = NULL,
+                role = NULL,
+                zip = NULL,
+                addr1 = NULL,
+                addr2 = NULL,
+                regip = NULL,
+                sms = NULL,
+                regDate = NULL,
+                leaveDate=NOW()
+        WHERE uid = #{uid}
+    </update>
+
     <select id="selectTerms" resultType="kr.co.sboard.dto.TermsDTO">
         select * from `terms`;
     </select>

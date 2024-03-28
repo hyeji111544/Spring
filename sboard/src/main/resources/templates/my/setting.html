@@ -28,6 +28,7 @@
             const setEmail = document.getElementById('settingEmail');
             const setHp = document.getElementById('settingHp');
             const setZip = document.getElementById('settingZip');
+            const btnRemoveUser = document.getElementById('btnRemoveUser');
             const saveButton = document.getElementById('saveButton');
             const resultComment = document.getElementById('resultComment');
             const resultMail = document.getElementById('resultMail');
@@ -135,6 +136,7 @@
                 hideResultInvalid();
 
                 btnSendEmailCode.onclick = async function () {
+                    const spinner   = this.getElementsByClassName('spinner')[0];
                     const value = document.getElementById('editMailInput').value;
                     console.log("here...1" + value);
 
@@ -144,6 +146,8 @@
                             "value": value
                         };
                         console.log("jsonData...! " + JSON.stringify(jsonData));
+                        hideResultInvalid();
+                        spinner.classList.remove('d-none');
 
                         //  서버에 요청을 보냅니다.
                         const data = await fetchGet(`/sboard/user/${type}/${value}`);
@@ -151,11 +155,13 @@
                         if (data.result > 0) {
                             // 중복이 있는 경우 사용자에게 알립니다.
                             showResultInvalid(resultMail, '이미 사용중인 이메일입니다.');
+                            spinner.classList.add('d-none');
                         } else {
                             // 중복이 없는 경우 코드인증 메일요청을 보냅니다.
                             console.log('data : ' + data.result);
                             hideResultInvalid();
                             showResultValid(resultMail, '인증코드가 발송 되었습니다.');
+                            spinner.classList.add('d-none');
                         }
                     }else {
                         console.error('중복 확인 요청 중 오류 발생:');
@@ -275,6 +281,26 @@
                     }
                 }
             }
+
+            btnRemoveUser.onclick = function (){
+                confirmModal('회원 탈퇴를 클릭하면 모든 계정 정보가 삭제됩니다.\n정말 탈퇴하시겠습니까?');
+                const btnOk = document.getElementById('btnOk');
+
+                btnOk.onclick = async function (){
+                    try{
+                        const data = await fetchDelete(`/sboard/user/${uid}`);
+                        console.log(data);
+                        closeconfirmModal();
+                        window.location.href = '/sboard/user/login?success=400';
+
+                    }catch (error){
+                        console.error('탈퇴실패', error);
+                    }
+                }
+            }
+
+
+
         }
 
     </script>
@@ -351,7 +377,7 @@
 
     </div>
     <div class="d-flex justify-content-end mb-4">
-        <a th:href="@{#}" class="btn btn-outline-secondary">회원탈퇴</a>
+        <a th:href="@{#}" class="btn btn-outline-secondary" id="btnRemoveUser">회원탈퇴</a>
     </div>
 
     <!-- 내용 끝 -->

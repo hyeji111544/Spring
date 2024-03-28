@@ -35,9 +35,8 @@
 
 
                 try{
-                    spinner.classList.add('d-none');
+
                     const data = await fetchPost(`/sboard/user/findId`, jsonData);
-                    spinner.classList.add('d-none');
                     console.log("!!!"+data);
 
                     if (data !== null) {
@@ -52,6 +51,8 @@
                 }catch (error){
                     console.error("오류... :", error);
                     showResultInvalid(resultName, '해당하는 유저를 찾을 수 없습니다.');
+                }finally {
+                    spinner.classList.add('d-none');
                 }
             }
 

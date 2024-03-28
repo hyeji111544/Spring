@@ -108,6 +108,8 @@ function alertModal(message){
     resultModal.show();
 }
 
+
+
 function editModal(message){
     const modal = document.getElementById('editModal');
     modal.getElementsByClassName('modal-title')[0].innerText = message + '수정';
@@ -170,6 +172,12 @@ function confirmModal(message) {
             resolve(false); // 취소 결과값 반환
         };
     });
+}
+
+function closeconfirmModal(){
+    var modalElement = document.getElementById('confirmModal'); // 모달 요소 가져오기
+    var modal = bootstrap.Modal.getInstance(modalElement); // 모달 객체 가져오기
+    modal.hide();
 }
 
 function showInputValid(inputs){

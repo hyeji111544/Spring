@@ -34,7 +34,9 @@ public class CommentController {
 
     @DeleteMapping("/comment/{no}")
     public ResponseEntity<?> deleteComment(@PathVariable("no") int no){
+
         return commentService.deleteComment(no);
+
     }
 
     @PutMapping("/comment")
