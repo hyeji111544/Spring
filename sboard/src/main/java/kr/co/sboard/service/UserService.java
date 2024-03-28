@@ -172,6 +172,26 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<?> updateUserZip(UserDTO userDTO){
+        Optional<User> optUser = userRepository.findById(userDTO.getUid());
+
+        if (optUser.isPresent()){
+            User user = optUser.get();
+
+            log.info("updateUser....."+ user);
+
+            User updateUser = userRepository.save(user);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(updateUser);
+        }else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("not found");
+        }
+    }
+
 
     /*
         - build.gradle 파일에 spring-boot-starter-mail 의존성 추가 할것

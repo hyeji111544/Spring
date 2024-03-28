@@ -136,6 +136,18 @@ function closeEditMailModal(){
     modal.hide();
 }
 
+function editAddrModal(){
+    const modal = document.getElementById('editAddrModal');
+    const resultModal = new bootstrap.Modal(modal);
+    resultModal.show();
+}
+
+function closeEditZipModal(){
+    var modalElement = document.getElementById('editAddrModal'); // 모달 요소 가져오기
+    var modal = bootstrap.Modal.getInstance(modalElement); // 모달 객체 가져오기
+    modal.hide();
+}
+
 
 function confirmModal(message) {
 

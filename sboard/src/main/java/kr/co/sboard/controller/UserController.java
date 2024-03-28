@@ -200,6 +200,11 @@ public class UserController {
         return userService.updateUserPass(userDTO);
     }
 
+    @PutMapping("/updateZip")
+    public ResponseEntity<?> putZip(@RequestBody UserDTO userDTO, HttpServletRequest req){
+        return userService.updateUserZip(userDTO);
+    }
+
     @GetMapping("/my/setting")
     public String mySetting(@RequestParam("uid") String uid, Model model){
 

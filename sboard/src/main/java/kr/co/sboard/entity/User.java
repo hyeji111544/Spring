@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import kr.co.sboard.dto.UserDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,7 +22,6 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uid;
     private String pass;
     private String name;
@@ -31,6 +34,8 @@ public class User {
     private String addr2;
     private String regip;
     private String sms;
+    // API 위해 추가
+    private String provider;
 
     @CreationTimestamp
     private LocalDateTime regDate;

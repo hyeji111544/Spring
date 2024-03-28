@@ -29,6 +29,10 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/user/login?success=300"));
 
+        // OAuth 설정
+        httpSecurity.oauth2Login(oauth -> oauth
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/"));
 
 
         // 인과 설정

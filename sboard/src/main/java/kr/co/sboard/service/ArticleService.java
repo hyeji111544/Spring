@@ -48,19 +48,19 @@ public class ArticleService {
 
         //닉네임 조인으로 인해 수정
         List<ArticleDTO> dtoList = pageArticle.getContent().stream()
-                .map(tuple ->
-                        {
-                            log.info("tuple : " + tuple);
-                            Article article = tuple.get(0, Article.class);
-                            String nick = tuple.get(1, String.class);
-                            article.setNick(nick);
+                                                .map(tuple ->
+                                                        {
+                                                            log.info("tuple : " + tuple);
+                                                            Article article = tuple.get(0, Article.class);
+                                                            String nick = tuple.get(1, String.class);
+                                                            article.setNick(nick);
 
-                            log.info("article : " + article);
+                                                            log.info("article : " + article);
 
-                            return modelMapper.map(article, ArticleDTO.class);
-                        }
-                )
-                .toList();
+                                                            return modelMapper.map(article, ArticleDTO.class);
+                                                        }
+                                                )
+                                                .toList();
         log.info("selectArticles....3");
 
         int total = (int) pageArticle.getTotalElements();
@@ -76,12 +76,23 @@ public class ArticleService {
 
         Pageable pageable = pageRequestDTO.getPageable("no");
 
-        Page<Article> pageArticle = articleRepository.searchArticles(pageRequestDTO,  pageable);
+        Page<Tuple> pageArticle = articleRepository.searchArticles(pageRequestDTO,  pageable);
 
 
         List<ArticleDTO> dtoList = pageArticle.getContent().stream()
-                .map(entity -> modelMapper.map(entity, ArticleDTO.class))
-                .toList();
+                                                .map(tuple ->
+                                                        {
+                                                            log.info("tuple : " + tuple);
+                                                            Article article = tuple.get(0, Article.class);
+                                                            String nick = tuple.get(1, String.class);
+                                                            article.setNick(nick);
+
+                                                            log.info("article : " + article);
+
+                                                            return modelMapper.map(article, ArticleDTO.class);
+                                                        }
+                                                )
+                                                .toList();
 
         int total = (int) pageArticle.getTotalElements();
 

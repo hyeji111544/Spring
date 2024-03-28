@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class User5DTO {
-    private String seq;
+    private int seq;
     private String name;
     private String gender;
     private int age;

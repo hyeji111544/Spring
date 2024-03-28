@@ -17,7 +17,6 @@ import java.util.List;
 @Slf4j
 public class User2Controller {
 
-    /**등록이 안되는 이슈가 있다.**/
     private final User2Service service;
 
     @GetMapping("/user2/list")

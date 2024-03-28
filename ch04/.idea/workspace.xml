@@ -10,19 +10,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48a3c447-9568-4f97-beff-5c0133d4737a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch04/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch04/config/MyWebAppInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/hello.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch01/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch01/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ch03/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch03/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/ch04/DAO/User5DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch04/DAO/User5DAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/ch04/DAO/User5RowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch04/DAO/User5RowMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/ch04/controller/User5Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/ch04/controller/User5Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user5/list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user5/list.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user5/modify.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user5/modify.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ch05/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ch05/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ch06/log/ch06.log" beforeDir="false" afterPath="$PROJECT_DIR$/../ch06/log/ch06.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ch06/src/main/java/kr/co/ch06/controller/User2Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ch06/src/main/java/kr/co/ch06/controller/User2Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ch06/src/main/java/kr/co/ch06/dto/User5DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ch06/src/main/java/kr/co/ch06/dto/User5DTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ch06/src/main/resources/templates/user3/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/../ch06/src/main/resources/templates/user3/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/main/java/kr/co/shopping/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/main/java/kr/co/shopping/member/Grade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/main/java/kr/co/shopping/member/Member.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/main/java/kr/co/shopping/member/MemberRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/main/java/kr/co/shopping/member/MemoryMemeberRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shopping/src/test/java/kr/co/shopping/AppTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,28 +71,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Tomcat Server.ch04.executor": "Run",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/java/Desktop/workspace/Spring/ch04/src/main/webapp/WEB-INF/views/user5",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.ch04.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/java/Desktop/workspace/Spring/ch04/src/main/webapp/WEB-INF/views/user5&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\java\Desktop\workspace\Spring\ch04\src\main\webapp\WEB-INF\views\user5" />
@@ -209,6 +221,14 @@
       <workItem from="1709600549257" duration="9735000" />
       <workItem from="1709610381434" duration="239000" />
       <workItem from="1709610626300" duration="14680000" />
+      <workItem from="1709683272075" duration="1086000" />
+      <workItem from="1709684375113" duration="2147000" />
+      <workItem from="1709687787042" duration="757000" />
+      <workItem from="1709691927394" duration="2150000" />
+      <workItem from="1709694172405" duration="601000" />
+      <workItem from="1709695202199" duration="131000" />
+      <workItem from="1709696134262" duration="21000" />
+      <workItem from="1710301058477" duration="30000" />
     </task>
     <servers />
   </component>

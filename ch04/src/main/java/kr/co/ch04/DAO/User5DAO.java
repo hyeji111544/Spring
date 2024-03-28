@@ -13,7 +13,7 @@ public class User5DAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     public void insertUser5(User5DTO user5DTO){
-        String sql = "INSERT INTO `user5` VALUES(?,?,?,?)";
+        String sql = "INSERT INTO `user5` (name, gender, age, addr) VALUES(?,?,?,?)";
         Object[] params = {
                 user5DTO.getName(),
                 user5DTO.getGender(),
@@ -25,12 +25,12 @@ public class User5DAO {
 
     public User5DTO selectUser5(String seq){
         String sql = "SELECT * FROM `user5` WHERE `seq`=?";
-        return null;
+        return jdbcTemplate.queryForObject(sql, new User5RowMapper(), seq);
     }
 
     public List<User5DTO> selectUser5s(){
         String sql = "SELECT * FROM `user5`";
-        return null;
+        return jdbcTemplate.query(sql, new User5RowMapper());
     }
 
     public void updateUser5(User5DTO user5DTO){

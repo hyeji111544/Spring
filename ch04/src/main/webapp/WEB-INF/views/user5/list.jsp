@@ -12,6 +12,7 @@
 
 <table border="1">
     <tr>
+        <td>번호</td>
         <td>이름</td>
         <td>성별</td>
         <td>나이</td>
@@ -26,8 +27,8 @@
             <td>${user.age}</td>
             <td>${user.addr}</td>
             <td>
-                <a href="/ch04/user5/modify?uid=${user.uid}">수정</a>
-                <a href="/ch04/user5/delete?uid=${user.uid}">삭제</a>
+                <a href="/ch04/user5/modify?seq=${user.seq}">수정</a>
+                <a href="/ch04/user5/delete?seq=${user.seq}">삭제</a>
             </td>
         </tr>
     </c:forEach>

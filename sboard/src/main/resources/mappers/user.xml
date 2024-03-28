@@ -61,6 +61,13 @@
         where uid = #{uid}
     </update>
 
+    <update id="updateUserZip">
+        update `user`  zip=#{zip},
+                        addr1=#{addr1},
+                        addr2=#{addr2}
+                        where uid = #{uid}
+    </update>
+
 
 
 </mapper>

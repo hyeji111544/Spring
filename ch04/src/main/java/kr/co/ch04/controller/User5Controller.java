@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,5 +35,27 @@ public class User5Controller {
 
         model.addAttribute("users", users);
         return "/user5/list";
+    }
+
+    @GetMapping("/user5/delete")
+    public String delete(@RequestParam("seq") String seq){
+        service.deleteUser5(seq);
+
+        return "redirect:/user5/list";
+    }
+
+    @GetMapping("/user5/modify")
+    public String modify(@RequestParam("seq") String seq, Model model){
+        User5DTO user5DTO = service.selectUser5(seq);
+
+        model.addAttribute(user5DTO);
+        return "/user5/modify";
+    }
+
+    @PostMapping("/user5/modify")
+    public String modify(@ModelAttribute User5DTO user5DTO){
+        service.updateUser5(user5DTO);
+
+        return "redirect:/user5/list";
     }
 }
