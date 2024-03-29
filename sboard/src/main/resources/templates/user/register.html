@@ -236,8 +236,9 @@
             btnCheckEmailCode.onclick = async function (){
 
                 const value = inputEmailCodes[0].value;
+                console.log("checkEmailCode... "+value);
 
-                const data = await fetchGet(`/sboard/user/email/${value}`);
+                const data = await fetchGet(`/sboard/email/${value}`);
 
                 if(!data.result){
                     showInputInvalid(inputEmails);
@@ -419,7 +420,7 @@
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input class="form-control inputAddr1" id="inputAddr1" type="text" name="add1" readonly placeholder="기본주소 입력" />
+                            <input class="form-control inputAddr1" id="inputAddr1" type="text" name="addr1" readonly placeholder="기본주소 입력" />
                             <label for="inputAddr1">기본주소</label>
                         </div>
 

@@ -4,10 +4,11 @@ import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +27,24 @@ public class FileController {
     public ResponseEntity<?> fileDownloadCount(@PathVariable("fno") int fno){
         log.info("fileDownloadCount : " + fno);
         return fileService.fileDownloadCount(fno);
+    }
+
+    @PostMapping("/file/modifyFile")
+    public void deleteFile(@RequestBody Map<String , List<Integer>> map){
+        log.info("여기!!!!!!!!!!!");
+        List<Integer> fnolists =  map.get("fno");
+        log.info(fnolists.get(0).toString());
+        Integer ano = null;
+        // 파일 갯수
+        int count =0;
+        for(Integer fno : fnolists){
+            ano = fileService.deleteFile(fno);
+            if(ano != null){
+                count++;
+            }
+        }
+        //serviceArticle. file 컬럼 마이너스 로직 호출.
+
     }
 
 

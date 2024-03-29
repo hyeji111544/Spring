@@ -56,7 +56,7 @@ public class UserController {
         String regip = req.getRemoteAddr();
         userDTO.setRegip(regip);
 
-        log.info(userDTO.toString());
+        log.info("insert....!! " + userDTO.toString());
 
         userService.insertUser(userDTO);
 
@@ -202,6 +202,7 @@ public class UserController {
 
     @PutMapping("/updateZip")
     public ResponseEntity<?> putZip(@RequestBody UserDTO userDTO, HttpServletRequest req){
+        log.info(userDTO.toString()+"@@@@");
         return userService.updateUserZip(userDTO);
     }
 

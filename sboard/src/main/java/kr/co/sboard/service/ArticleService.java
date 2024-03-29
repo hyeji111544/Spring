@@ -201,6 +201,6 @@ public class ArticleService {
 
     // insertComment 메서드 -> CommentService 클래스로 이동
     // fileUpload 메서드 -> FileService 클래스로 이동
-
+    // file 마이너스 하는 로직.
 
 }

@@ -80,7 +80,7 @@ public class FileService {
         return files;
     }
 
-    public Article deleteFile(int fno){
+    public Integer deleteFile(int fno){
 
         //파일 조회
         Optional<kr.co.sboard.entity.File> optFile = fileRepository.findById(fno);
@@ -97,7 +97,8 @@ public class FileService {
             Optional<Article> optArticle = articleRepository.findById(ano);
             if(optArticle.isPresent()){
                 log.info("fileDelete...4" + optArticle.toString());
-                return optArticle.get();
+                return optArticle.get().getNo();
+                //반환된 ano 값
             }else {
                 log.info("fileDelete...5");
                 return null;

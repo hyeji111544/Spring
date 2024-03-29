@@ -267,11 +267,11 @@
                         "addr1" : addr1Value,
                         "addr2" : addr2Value
                     };
-                    console.log(jsonData);
+                    console.log(jsonData.addr1);
 
                     try {
                         const data = await fetchPut(`/sboard/updateZip`, jsonData);
-                        console.log(data);
+                        console.log("1!!!"+data);
                         document.getElementById('userZip').innerText = zipValue;
                         document.getElementById('userAddr1').innerText = addr1Value;
                         document.getElementById('userAddr2').innerText = addr2Value;

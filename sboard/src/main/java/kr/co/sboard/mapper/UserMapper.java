@@ -16,5 +16,5 @@ public interface UserMapper {
     public void deleteUser(@Param("uid") String uid);
 
     public void updateUserBy(@Param("type") String type, @Param("value") String value, @Param("uid") String uid);
-
+    public void updateUserZip(UserDTO userDTO);
 }

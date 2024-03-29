@@ -25,7 +25,6 @@
         UPDATE `user` SET
                 pass = NULL,
                 name = NULL,
-                nick = NULL,
                 email = NULL,
                 hp = NULL,
                 role = NULL,
@@ -80,7 +79,8 @@
     </update>
 
     <update id="updateUserZip">
-        update `user`  zip=#{zip},
+        update `user` set
+                        zip=#{zip},
                         addr1=#{addr1},
                         addr2=#{addr2}
                         where uid = #{uid}

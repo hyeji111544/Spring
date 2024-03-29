@@ -23,7 +23,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.Console;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -177,15 +179,14 @@ public class UserService {
         Optional<User> optUser = userRepository.findById(userDTO.getUid());
 
         if (optUser.isPresent()){
-            User user = optUser.get();
 
-            log.info("updateUser....."+ user);
-
-            User updateUser = userRepository.save(user);
+            userMapper.updateUserZip(userDTO);
+            Map<String, Object> jsonResult = new HashMap<>();
+            jsonResult.put("result","success");
 
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(updateUser);
+                    .body(jsonResult);
         }else {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -242,6 +243,8 @@ public class UserService {
         }catch(Exception e){
             log.error("sendEmailConde : " + e.getMessage());
         }
+
+
     }
 
 

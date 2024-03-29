@@ -8,6 +8,9 @@
         window.onload = function (){
             const btnCancel = document.getElementById('btnCancel');
             const btnModify = document.getElementById('btnModify');
+            const btnFileDel = document.querySelectorAll('#btnFileDel')[0];
+            const fnoList = [];
+            const no = [modifyForm.no.value];
 
             btnCancel.onclick = function (e) {
                 e.preventDefault();
@@ -18,44 +21,29 @@
                 });
 
             }
-            /** id="btnModify **/
-            btnModify.onclick = function (e){
-                e.preventDefault();
-                const modifyFrom = document.modifyFrom;
-                const jsonData = {
-                    "no": modifyFrom.no.value,
-                    "cate": modifyFrom.cate.value,
-                    "content": modifyFrom.content.value,
-                    "title": modifyFrom.title.value
-                    //"file": file
-                }
 
-                console.log(jsonData);
-
-                //url 에서 파라미터 추출하는 코드
-                function getPageParameter() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    return urlParams.get('pg');
-                }
-
-                const data = fetchPut(`/sboard/article/modify`, jsonData)
-                    .then(data => {
-                        console.log(data); // 응답 데이터 출력
-
-                        const pg = getPageParameter();
-                        // view 페이지로 이동
-                        const { no, cate } = data; // 응답 데이터에서 필요한 매개변수 추출
-                        const viewUrl = `/sboard/article/view?no=${no}&cate=${cate}&pg=${pg}`;
-                        window.location.href = viewUrl; // 새로운 URL로 이동
-                    })
-                    .catch(error => {
-                        console.error('Error updating article:', error); // 오류 처리
-                    });
-                console.log(data);
-
+            btnFileDel.onclick = function (e){
+                const listItem = e.target.closest('#fileList');
+                listItem.classList.add('d-none');
+                const fno = btnFileDel.dataset.fno;
+                fnoList.push(fno)
+                console.log(fno);
             }
 
+            /** id="btnModify **/
+            /** 수정완료 버튼을 눌러야 수정 내용이 반영됨 **/
+            btnModify.onclick = async function (e){
+                e.preventDefault();
+                if (fnoList.length>0){
+                    const jsonDate = {
+                        fno : fnoList
+                    };
+                    const data = fetchPost(`/sboard/file/modifyFile`, jsonDate);
+                }
+                console.log(no);
 
+                //document.modifyFrom.submit();
+            }
 
         }
 
@@ -75,7 +63,7 @@
         </div>
         <div class="card-body">
 
-            <form id="modifyForm" name="modifyFrom" th:action="@{/article/write}" method="post" enctype="multipart/form-data">
+            <form id="modifyForm" name="modifyFrom" th:action="@{/article/modify}" method="post" enctype="multipart/form-data">
                 <input type="text" name="writer" th:value="${#authentication.principal.user.uid}">
                 <input type="text" name="cate" th:value="${articleDTO.getCate()}">
                 <input type="text" name="no" th:value="${articleDTO.getNo()}">
@@ -87,16 +75,17 @@
                     <label for="exampleFormControlTextarea1" class="form-label">글내용</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="content" >[[${articleDTO.content}]]</textarea>
                 </div>
-                <div th:if="${articleDTO.file > 0}" class="mb-3">
+                <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label" >첨부파일</label>
                     <label for="formFileMultiple" class="form-label">파일첨부</label>
                     <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
                     <ul class="list-group">
 
-                        <li th:each="file:${articleDTO.fileList}" class="list-group-item d-flex justify-content-between align-items-center">
+                        <li th:each="file:${articleDTO.fileList}" class="list-group-item d-flex justify-content-between align-items-center" id="fileList">
                             <!-- REST API 개발자도구 열어서 해당 링크 주소 확인해 볼것-->
                             <a th:href="@{/file/fileDownload/{fno}(fno=${file.fno})}" class="fileLink" th:data-fno="${file.fno}">[[${file.oName}]]</a>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteFile([[${file.fno}]], [[${fileStat.index}]]);">삭제</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" th:data-fno="${file.fno}" id="btnFileDel">삭제</button>
+                            <p>[[${file.fno}]]</p>
                         </li>
                     </ul>
                 </div>
