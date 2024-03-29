@@ -172,31 +172,59 @@ public class ArticleService {
         }
     }
 
-    public ResponseEntity<?> updateArticle(ArticleDTO articleDTO){
+    public Article updateArticle(ArticleDTO articleDTO) {
 
         // 수정 전 존재여부 확인
         Optional<Article> optArticle = articleRepository.findById(articleDTO.getNo());
 
-        if(optArticle.isPresent()){
-            Article article = optArticle.get();
+        Article savedArticle = null;
 
-            article.setContent(articleDTO.getContent());
-            article.setTitle(articleDTO.getTitle());
+        if (optArticle.isPresent()) {
+            /**
+             Article article = optArticle.get();
+
+             article.setContent(articleDTO.getContent());
+             article.setTitle(articleDTO.getTitle());
 
 
-            log.info("updateArticle....1" + article);
+             log.info("updateArticle....1" + article);
 
-            Article modifiedArticle = articleRepository.save(article);
+             Article modifiedArticle = articleRepository.save(article);
+             **/
 
-            // 수정 후 수정 데이터 반환
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(modifiedArticle);
-        }else {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("not found");
+            // 파일 첨부 처리
+            List<FileDTO> files = fileService.fileUpload(articleDTO);
+
+            // 파일 전부 갯수 초기화
+            //articleDTO.setFile(files.size());
+
+            // articleDTO 를 articleEntity로 변환
+            Article article = modelMapper.map(articleDTO, Article.class);
+            log.info("insert : " + article.toString());
+
+            // 저장 후 저장한 Entity 객체 반환
+            savedArticle = articleRepository.save(article);
+            log.info("insertArticle : " + savedArticle.toString());
+
+            // 파일 insert
+            for (FileDTO fileDTO : files) {
+                fileDTO.setAno(savedArticle.getNo());
+
+                File file = modelMapper.map(fileDTO, File.class);
+
+                fileRepository.save(file);
+            }
+
         }
+        return savedArticle;
+    }
+
+    public void updateArticleForFileCount(int no){
+        Article article = articleRepository.findById(no).get();
+        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+        articleDTO.setFile(articleDTO.getFile() - 1);
+        Article updateArticle = modelMapper.map(articleDTO, Article.class);
+        articleRepository.save(updateArticle);
     }
 
     // insertComment 메서드 -> CommentService 클래스로 이동

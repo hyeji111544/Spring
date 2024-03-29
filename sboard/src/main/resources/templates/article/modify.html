@@ -8,7 +8,7 @@
         window.onload = function (){
             const btnCancel = document.getElementById('btnCancel');
             const btnModify = document.getElementById('btnModify');
-            const btnFileDel = document.querySelectorAll('#btnFileDel')[0];
+            const btnFileDel = document.querySelectorAll('#btnFileDel');
             const fnoList = [];
             const no = [modifyForm.no.value];
 
@@ -22,17 +22,21 @@
 
             }
 
-            btnFileDel.onclick = function (e){
-                const listItem = e.target.closest('#fileList');
-                listItem.classList.add('d-none');
-                const fno = btnFileDel.dataset.fno;
-                fnoList.push(fno)
-                console.log(fno);
-            }
+            btnFileDel.forEach(function(btnFileDel) {
+                btnFileDel.addEventListener('click', function (e){
+                    const listItem = e.target.closest('#fileList');
+                    listItem.classList.add('d-none');
+                    const fno = btnFileDel.dataset.fno;
+                    fnoList.push(fno)
+                    console.log(fno);
+
+                });
+            });
+
 
             /** id="btnModify **/
             /** 수정완료 버튼을 눌러야 수정 내용이 반영됨 **/
-            btnModify.onclick = async function (e){
+            btnModify.onclick =  function (e){
                 e.preventDefault();
                 if (fnoList.length>0){
                     const jsonDate = {

@@ -1,5 +1,6 @@
 package kr.co.sboard.controller;
 
+import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class FileController {
 
     private final FileService fileService;
+    private final ArticleService articleService;
 
     @GetMapping("/file/fileDownload/{fno}")
     public ResponseEntity<?> fileDownload(@PathVariable("fno") int fno){
@@ -31,20 +33,17 @@ public class FileController {
 
     @PostMapping("/file/modifyFile")
     public void deleteFile(@RequestBody Map<String , List<Integer>> map){
-        log.info("여기!!!!!!!!!!!");
         List<Integer> fnolists =  map.get("fno");
         log.info(fnolists.get(0).toString());
         Integer ano = null;
         // 파일 갯수
-        int count =0;
         for(Integer fno : fnolists){
             ano = fileService.deleteFile(fno);
             if(ano != null){
-                count++;
+                articleService.updateArticleForFileCount(ano);
             }
         }
         //serviceArticle. file 컬럼 마이너스 로직 호출.
-
     }
 
 

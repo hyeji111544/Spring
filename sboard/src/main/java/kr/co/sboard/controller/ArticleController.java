@@ -86,6 +86,21 @@ public class ArticleController {
         return "redirect:/article/list?cate="+cate;
     }
 
+    @PostMapping("/article/modify")
+    public String modify(Model model, HttpServletRequest req, ArticleDTO articleDTO){
+        String regip = req.getRemoteAddr();
+        articleDTO.setRegip(regip);
+
+        log.info(articleDTO.toString());
+        String cate = articleDTO.getCate();
+
+
+        Article article= articleService.updateArticle(articleDTO);
+        int no =article.getNo();
+
+        return "redirect:/article/list?cate="+cate;
+    }
+
     @GetMapping("/article/view")
     public String view(Model model, int no , int pg){
         ArticleDTO articleDTO = articleService.findById(no);
@@ -96,7 +111,6 @@ public class ArticleController {
     }
 
     // fileDownload 메서드 FileController 로 이동
-
     @GetMapping("/article/modify")
     public String modify(Model model, int no , int pg){
         ArticleDTO articleDTO = articleService.findById(no);
@@ -106,12 +120,18 @@ public class ArticleController {
         log.info(articleDTO.toString());
         return "/article/modify";
     }
+/**
+    @PostMapping("/article/modify")
+    public String modifyArticle(@RequestBody ArticleDTO articleDTO, HttpServletRequest req){
+        log.info(articleDTO.toString());
+        String cate = articleDTO.getCate();
 
-    @PutMapping("/article/modify")
-    public ResponseEntity<?> modifyArticle(@RequestBody ArticleDTO articleDTO, HttpServletRequest req){
-        return articleService.updateArticle(articleDTO);
+        articleService.updateArticle(articleDTO);
+
+        return "redirect:/article/list?cate="+cate;
 
     }
+ **/
 
     @DeleteMapping("/article/{no}")
     public ResponseEntity<?> deleteArticle(@PathVariable("no") int no){
