@@ -79,8 +79,7 @@ public class FileService {
 
         return files;
     }
-
-    public Integer deleteFile(int fno){
+    public Integer deleteFile(HttpServletRequest req, int fno){
 
         //파일 조회
         Optional<kr.co.sboard.entity.File> optFile = fileRepository.findById(fno);
@@ -93,6 +92,18 @@ public class FileService {
 
             log.info("fileDelete...2");
             fileRepository.deleteById(fno);
+
+            // 업로드 디렉토리 파일 삭제
+            ServletContext ctx = req.getServletContext();
+            String uploadPath = ctx.getRealPath("/uploads");
+
+            // 파일 객체 생성
+            java.io.File fileObj = new java.io.File(uploadPath + java.io.File.separator + file.getSName());
+
+            // 파일 삭제
+            if(fileObj.exists()) {
+                fileObj.delete();
+            }
 
             Optional<Article> optArticle = articleRepository.findById(ano);
             if(optArticle.isPresent()){

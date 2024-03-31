@@ -50,12 +50,10 @@ public class ArticleService {
         List<ArticleDTO> dtoList = pageArticle.getContent().stream()
                                                 .map(tuple ->
                                                         {
-                                                            log.info("tuple : " + tuple);
                                                             Article article = tuple.get(0, Article.class);
                                                             String nick = tuple.get(1, String.class);
                                                             article.setNick(nick);
 
-                                                            log.info("article : " + article);
 
                                                             return modelMapper.map(article, ArticleDTO.class);
                                                         }
@@ -180,6 +178,8 @@ public class ArticleService {
         Article savedArticle = null;
 
         if (optArticle.isPresent()) {
+
+            Article FileArticle = optArticle.get();
             /**
              Article article = optArticle.get();
 
@@ -197,10 +197,15 @@ public class ArticleService {
 
             // 파일 전부 갯수 초기화
             //articleDTO.setFile(files.size());
+            int FileCount = FileArticle.getFile();
+            articleDTO.setFile(FileCount);
 
             // articleDTO 를 articleEntity로 변환
             Article article = modelMapper.map(articleDTO, Article.class);
             log.info("insert : " + article.toString());
+
+            Article existingArticle = optArticle.get();
+            article.setRdate(existingArticle.getRdate());
 
             // 저장 후 저장한 Entity 객체 반환
             savedArticle = articleRepository.save(article);
@@ -220,11 +225,21 @@ public class ArticleService {
     }
 
     public void updateArticleForFileCount(int no){
-        Article article = articleRepository.findById(no).get();
-        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
-        articleDTO.setFile(articleDTO.getFile() - 1);
-        Article updateArticle = modelMapper.map(articleDTO, Article.class);
-        articleRepository.save(updateArticle);
+        Optional<Article> optionalArticle = articleRepository.findById(no);
+
+        if (optionalArticle.isPresent()) {
+            Article article = optionalArticle.get();
+
+            if (article.getFile() > 0) {
+                article.setFile(article.getFile() - 1);
+                log.info("Article file count updated for article id: {}", no);
+                articleRepository.save(article);
+            } else {
+                log.warn("File count for article id {} is already zero.", no);
+            }
+        } else {
+            log.error("Article not found for id: {}", no);
+        }
     }
 
     // insertComment 메서드 -> CommentService 클래스로 이동

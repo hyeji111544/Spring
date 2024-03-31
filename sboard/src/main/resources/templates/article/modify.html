@@ -36,8 +36,7 @@
 
             /** id="btnModify **/
             /** 수정완료 버튼을 눌러야 수정 내용이 반영됨 **/
-            btnModify.onclick =  function (e){
-                e.preventDefault();
+            btnModify.onclick =  function (){
                 if (fnoList.length>0){
                     const jsonDate = {
                         fno : fnoList
@@ -46,9 +45,8 @@
                 }
                 console.log(no);
 
-                //document.modifyFrom.submit();
+                document.modifyFrom.submit();
             }
-
         }
 
 

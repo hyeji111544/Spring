@@ -1,10 +1,12 @@
 package kr.co.sboard.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,19 +33,19 @@ public class FileController {
         return fileService.fileDownloadCount(fno);
     }
 
+
     @PostMapping("/file/modifyFile")
-    public void deleteFile(@RequestBody Map<String , List<Integer>> map){
+    public void deleteFile(@RequestBody Map<String , List<Integer>> map, HttpServletRequest req){
         List<Integer> fnolists =  map.get("fno");
-        log.info(fnolists.get(0).toString());
-        Integer ano = null;
+        log.info("deleteFile!!!!"+fnolists.get(0).toString());
         // 파일 갯수
         for(Integer fno : fnolists){
-            ano = fileService.deleteFile(fno);
-            if(ano != null){
-                articleService.updateArticleForFileCount(ano);
-            }
+            Integer ano = fileService.deleteFile(req, fno);
+            log.info("deleteFile!!2...:" + ano);
+
+            articleService.updateArticleForFileCount(ano);
+
         }
-        //serviceArticle. file 컬럼 마이너스 로직 호출.
     }
 
 
